@@ -8,19 +8,19 @@ const Onboarding3 = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen gradient-bg flex flex-col items-center justify-between p-6 pt-safe pb-safe">
+    <div className="min-h-screen gradient-bg flex flex-col items-center justify-between px-6 py-8 pt-safe pb-safe">
       {/* Logo */}
-      <div className="flex items-center gap-3 mt-4">
+      <div className="flex items-center gap-3 flex-shrink-0">
         <img src={bloomgenLogo} alt="Bloomgen" className="w-8 h-8" />
-        <h1 className="text-white text-2xl font-black tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>
+        <h1 className="text-white text-2xl font-black tracking-tight">
           BLOOMGEN
         </h1>
       </div>
 
       {/* Center Content */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md px-4">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md">
         {/* Hero Image */}
-        <div className="w-full max-w-sm mb-8">
+        <div className="w-full mb-6">
           <img 
             src={onboardingImage} 
             alt="Viral AI prompts" 
@@ -29,24 +29,18 @@ const Onboarding3 = () => {
         </div>
 
         {/* Text Content */}
-        <div className="text-center space-y-4">
-          <h2 
-            className="text-white text-3xl font-black leading-tight tracking-tight px-2"
-            style={{ fontFamily: 'Inter, sans-serif' }}
-          >
-            EXPERIENCE HUNDREDS<br />OF <span className="italic">VIRAL AI PROMPTS</span>
+        <div className="text-center space-y-3 px-2">
+          <h2 className="text-white text-[26px] leading-tight font-black tracking-tight">
+            EXPERIENCE HUNDREDS OF <span className="italic">VIRAL AI PROMPTS</span>
           </h2>
-          <p 
-            className="text-white/80 text-base leading-relaxed px-4"
-            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
-          >
+          <p className="text-white/80 text-[15px] leading-relaxed font-normal">
             Be the first to try the latest trends and styles taking over the internet.
           </p>
         </div>
       </div>
 
       {/* Bottom Section */}
-      <div className="w-full max-w-md space-y-6">
+      <div className="w-full max-w-md space-y-5 flex-shrink-0">
         {/* Progress Indicators */}
         <div className="flex justify-center gap-2">
           <div className="w-8 h-2 rounded-full bg-white/20" />
@@ -57,19 +51,11 @@ const Onboarding3 = () => {
         {/* Button */}
         <Button
           onClick={() => navigate("/auth/signup")}
-          className="w-full h-14 rounded-2xl text-lg font-bold shadow-lg flex items-center justify-center gap-2"
-          style={{ 
-            fontFamily: 'Inter, sans-serif',
-            backgroundColor: '#CAFC80',
-            color: '#000000'
-          }}
+          className="w-full h-14 rounded-[20px] text-base font-bold shadow-lg flex items-center justify-center gap-2 bg-primary text-black hover:bg-primary/90"
         >
           Start the Magic
           <img src={starIcon} alt="✨" className="w-5 h-5" />
         </Button>
-
-        {/* iOS Home Indicator Space */}
-        <div className="h-5" />
       </div>
     </div>
   );
