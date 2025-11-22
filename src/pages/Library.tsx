@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PaywallModal } from "@/components/PaywallModal";
+import bloomgenLogo from "@/assets/bloomgen_logo.png";
 
 const Library = () => {
   const [savedPrompts] = useState<string[]>(["1", "3", "5"]); // Mock saved IDs
@@ -16,7 +17,14 @@ const Library = () => {
   const isPro = false;
 
   const savedItems = mockPrompts.filter(p => savedPrompts.includes(p.id));
-  const placeholderCount = 6 - savedItems.length;
+  
+  // Create grid pattern: 3 columns, alternating colors
+  // Pattern: Gray, Green, Gray / Green, Gray, Green / Gray, Green, Gray
+  const gridPattern = [
+    false, true, false,  // Row 1: Gray, Green, Gray
+    true, false, true,   // Row 2: Green, Gray, Green
+    false, true, false   // Row 3: Gray, Green, Gray
+  ];
 
   const handleCopy = (prompt: Prompt) => {
     if (isPro) {
@@ -31,24 +39,38 @@ const Library = () => {
     }
   };
 
+  const handleItemClick = (prompt: Prompt) => {
+    // Copy to clipboard when tapping a saved item
+    navigator.clipboard.writeText(prompt.prompt_text);
+    toast({
+      title: "Prompt Copied!",
+      description: "Ready to create magic ✨",
+      duration: 2000,
+      className: "glass border-border",
+    });
+  };
+
   return (
-    <div className="min-h-screen gradient-bg pb-24">
-      <header className="glass border-b border-border sticky top-0 z-40">
-        <div className="max-w-md mx-auto px-6 py-6">
-          <h1 className="text-2xl font-bold mb-2">BLOOMGEN</h1>
-          <p className="text-sm text-muted-foreground">
-            ALL YOUR SAVED PROMPTS — READY TO COPY
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-[#1a2f1a] to-[#0a1f0a] pb-24">
+      <header className="px-6 pt-12 pb-8 text-center">
+        <div className="flex justify-center mb-6">
+          <img src={bloomgenLogo} alt="Bloomgen" className="h-12" />
         </div>
+        <h1 className="text-white text-2xl tracking-wide mb-1" style={{ fontFamily: 'Inter', fontWeight: 900 }}>
+          ALL YOUR SAVED PROMPTS
+        </h1>
+        <h2 className="text-white text-2xl" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic' }}>
+          READY TO COPY!
+        </h2>
       </header>
 
-      <main className="max-w-md mx-auto px-6 py-6">
-        <div className="grid grid-cols-2 gap-4">
-          {savedItems.map((prompt) => (
+      <main className="max-w-md mx-auto px-6 pb-6">
+        <div className="grid grid-cols-3 gap-3">
+          {savedItems.map((prompt, index) => (
             <button
               key={prompt.id}
-              onClick={() => setSelectedPrompt(prompt)}
-              className="glass rounded-2xl overflow-hidden aspect-[3/4] transition-smooth hover:scale-[1.02]"
+              onClick={() => handleItemClick(prompt)}
+              className="rounded-3xl overflow-hidden aspect-[3/4] transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               <img
                 src={prompt.image_url}
@@ -58,14 +80,19 @@ const Library = () => {
             </button>
           ))}
           
-          {Array.from({ length: placeholderCount }).map((_, i) => (
-            <div
-              key={`placeholder-${i}`}
-              className={`glass rounded-2xl aspect-[3/4] ${
-                i % 2 === 0 ? "bg-primary/10" : "bg-card"
-              }`}
-            />
-          ))}
+          {Array.from({ length: Math.max(0, 9 - savedItems.length) }).map((_, i) => {
+            const index = savedItems.length + i;
+            const isGreen = gridPattern[index % 9];
+            return (
+              <div
+                key={`placeholder-${i}`}
+                className="rounded-3xl aspect-[3/4]"
+                style={{ 
+                  backgroundColor: isGreen ? '#CAFC80' : '#D9D9D9'
+                }}
+              />
+            );
+          })}
         </div>
       </main>
 
