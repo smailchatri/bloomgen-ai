@@ -79,7 +79,7 @@ const Signup = () => {
         </div>
 
         {/* Title */}
-        <h1 className="text-white text-[32px] font-bold text-center mb-4 leading-tight">
+        <h1 className="text-white text-[32px] font-bold text-center mb-4 leading-tight max-w-[300px]">
           Unlock Your Creative Flow!
         </h1>
 
@@ -93,18 +93,18 @@ const Signup = () => {
           <button
             onClick={handleAppleSignup}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-6"
           >
-            <img src={appleIcon} alt="Apple" className="w-5 h-auto mr-3" />
+            <img src={appleIcon} alt="Apple" className="w-4 h-auto mr-3" />
             {isAuthenticating ? "Signing up..." : "Sign up with Apple"}
           </button>
 
           <button
             onClick={handleGoogleSignup}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-6"
           >
-            <img src={googleIcon} alt="Google" className="w-5 h-5 mr-3" />
+            <img src={googleIcon} alt="Google" className="w-4 h-4 mr-3" />
             {isAuthenticating ? "Signing up..." : "Sign up with Google"}
           </button>
         </div>
