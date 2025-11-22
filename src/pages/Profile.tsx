@@ -1,90 +1,143 @@
 import { BottomNav } from "@/components/BottomNav";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useState } from "react";
-import { 
-  HelpCircle, 
-  FileText, 
-  MessageSquare, 
-  Trash2, 
-  CreditCard, 
-  Shield, 
-  FileCheck,
-  LogOut 
-} from "lucide-react";
+import personalBg from "@/assets/personal_bg.png";
+import userProfile from "@/assets/user_profile.png";
+import helpIcon from "@/assets/help_icon.png";
+import guidelinesIcon from "@/assets/guidelines_icon.png";
+import faqIcon from "@/assets/faq_icon.png";
+import deleteAccountIcon from "@/assets/delete_account_icon.png";
+import privacyIcon from "@/assets/privacy_icon.png";
+import termsIcon from "@/assets/terms_icon.png";
+import logoutIcon from "@/assets/logout_icon.png";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      setIsLoggingOut(true);
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success("Logged out successfully");
-        navigate("/auth/login");
-      }
-    } catch (error) {
-      toast.error("Failed to logout");
-    } finally {
-      setIsLoggingOut(false);
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('mockAuthUser');
+    localStorage.removeItem('hasSeenOnboarding');
+    toast.success("Logged out successfully");
+    navigate("/auth/login");
   };
 
-  const menuItems = [
-    { icon: HelpCircle, label: "Get Help", href: "#" },
-    { icon: MessageSquare, label: "Community Guidelines", href: "#" },
-    { icon: FileText, label: "FAQ", href: "#" },
-    { icon: Trash2, label: "Delete Account", href: "#", danger: true },
-    { icon: CreditCard, label: "Manage Subscription", href: "#" },
-    { icon: Shield, label: "Privacy Policy", href: "#" },
-    { icon: FileCheck, label: "Terms of Service", href: "#" },
-  ];
+  const handleDeleteAccount = () => {
+    window.location.href = "mailto:support@bloomgen.app?subject=Delete My Bloomgen Account";
+  };
+
+  const handleManageSubscription = () => {
+    alert("Subscription management will be enabled later.");
+  };
+
+  const openLink = (url: string) => {
+    window.open(url, '_blank');
+  };
 
   return (
-    <div className="min-h-screen gradient-bg pb-24">
-      <div className="relative min-h-[40vh] glass">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 opacity-50" />
-        <div className="relative max-w-md mx-auto px-6 pt-16 pb-8 flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full glass border-2 border-primary/50 flex items-center justify-center mb-4 glow-primary">
-            <span className="text-4xl">👤</span>
+    <div className="h-screen w-screen relative overflow-hidden">
+      {/* Fixed Background */}
+      <div 
+        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${personalBg})` }}
+      />
+
+      {/* Scrollable Content */}
+      <div className="relative h-full overflow-y-auto pb-24">
+        <div className="max-w-md mx-auto px-6 pt-16 space-y-4">
+          {/* Profile Header */}
+          <div 
+            className="bg-black/60 backdrop-blur-md rounded-[32px] border border-white/20 p-6 flex items-center gap-4"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            <img 
+              src={userProfile} 
+              alt="Profile" 
+              className="w-16 h-16 rounded-full"
+            />
+            <div>
+              <div className="text-white font-bold text-lg">The user name</div>
+              <div className="text-white/70 font-light italic text-sm">Joined in (x)</div>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold mb-1">User Name</h2>
-          <p className="text-sm text-muted-foreground">Joined January 2025</p>
+
+          {/* Settings Rows */}
+          <div className="space-y-3">
+            <button
+              onClick={() => openLink('https://bloomgen.app/support')}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              <img src={helpIcon} alt="" className="w-6 h-6" />
+              <span className="text-white font-semibold text-base">Get Help</span>
+            </button>
+
+            <button
+              onClick={() => openLink('https://bloomgen.app/policies')}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              <img src={guidelinesIcon} alt="" className="w-6 h-6" />
+              <span className="text-white font-semibold text-base">Community Guidelines</span>
+            </button>
+
+            <button
+              onClick={() => openLink('https://bloomgen.app/support')}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              <img src={faqIcon} alt="" className="w-6 h-6" />
+              <span className="text-white font-semibold text-base">FAQ</span>
+            </button>
+
+            <button
+              onClick={handleDeleteAccount}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
+              <span className="text-white font-semibold text-base">Delete Account</span>
+            </button>
+
+            <button
+              onClick={handleManageSubscription}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
+              <span className="text-white font-semibold text-base">Manage Subscription</span>
+            </button>
+
+            <button
+              onClick={() => openLink('https://bloomgen.app/policies')}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              <img src={privacyIcon} alt="" className="w-6 h-6" />
+              <span className="text-white font-semibold text-base">Privacy Policy</span>
+            </button>
+          </div>
+
+          {/* Terms of Service */}
+          <button
+            onClick={() => openLink('https://bloomgen.app/policies')}
+            className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70 mt-6"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            <img src={termsIcon} alt="" className="w-6 h-6" />
+            <span className="text-white font-semibold text-base">Terms of Service</span>
+          </button>
+
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70 mt-6"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            <img src={logoutIcon} alt="" className="w-6 h-6" />
+            <span className="text-white font-semibold text-base">Logout</span>
+          </button>
         </div>
       </div>
-
-      <main className="max-w-md mx-auto px-6 py-6">
-        <div className="glass rounded-2xl overflow-hidden divide-y divide-border">
-          {menuItems.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`flex items-center gap-4 p-4 transition-smooth hover:bg-card ${
-                item.danger ? "text-destructive" : ""
-              }`}
-            >
-              <item.icon className="w-5 h-5" />
-              <span className="font-medium">{item.label}</span>
-            </a>
-          ))}
-        </div>
-
-        <Button
-          onClick={handleLogout}
-          disabled={isLoggingOut}
-          className="w-full mt-6 glass hover:bg-card border border-border h-14 rounded-xl font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <LogOut className="w-5 h-5 mr-2" />
-          {isLoggingOut ? "Logging out..." : "Logout"}
-        </Button>
-      </main>
 
       <BottomNav />
     </div>
