@@ -1,40 +1,73 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import bloomgenLogo from "@/assets/bloomgen_logo.png";
+import onboardingImage from "@/assets/onboarding_2.png";
 
 const Onboarding2 = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen gradient-bg flex flex-col items-center justify-between p-6 pb-safe">
-      <div className="flex-1 flex flex-col items-center justify-center max-w-md w-full">
-        <div className="glass rounded-3xl p-8 mb-8 aspect-square w-full max-w-sm flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-4">🎨</div>
-            <h2 className="text-2xl font-bold">Save & Organize</h2>
-          </div>
-        </div>
-
-        <h1 className="text-4xl font-bold text-center mb-4">
-          Build Your Library
+    <div className="min-h-screen gradient-bg flex flex-col items-center justify-between p-6 pt-safe pb-safe">
+      {/* Logo */}
+      <div className="flex items-center gap-3 mt-4">
+        <img src={bloomgenLogo} alt="Bloomgen" className="w-8 h-8" />
+        <h1 className="text-white text-2xl font-black tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>
+          BLOOMGEN
         </h1>
-        <p className="text-center text-muted-foreground text-lg">
-          Save your favorite prompts and access them anytime, anywhere
-        </p>
       </div>
 
-      <div className="w-full max-w-md space-y-4">
-        <div className="flex justify-center gap-2 mb-6">
-          <div className="w-8 h-2 rounded-full bg-muted" />
-          <div className="w-8 h-2 rounded-full bg-primary glow-primary" />
-          <div className="w-8 h-2 rounded-full bg-muted" />
+      {/* Center Content */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md px-4">
+        {/* Hero Image */}
+        <div className="w-full max-w-sm mb-8">
+          <img 
+            src={onboardingImage} 
+            alt="Copy and paste prompts" 
+            className="w-full h-auto drop-shadow-2xl"
+          />
         </div>
 
+        {/* Text Content */}
+        <div className="text-center space-y-4">
+          <h2 
+            className="text-white text-3xl font-black leading-tight tracking-tight px-2"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            COPY & PASTE INTO ANY AI<br />AND GET STUNNING IMAGES
+          </h2>
+          <p 
+            className="text-white/80 text-base leading-relaxed px-4"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+          >
+            Copy and paste powerful prompts into any AI to turn your selfies into stunning images.
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom Section */}
+      <div className="w-full max-w-md space-y-6">
+        {/* Progress Indicators */}
+        <div className="flex justify-center gap-2">
+          <div className="w-8 h-2 rounded-full bg-white/20" />
+          <div className="w-8 h-2 rounded-full bg-primary glow-primary" />
+          <div className="w-8 h-2 rounded-full bg-white/20" />
+        </div>
+
+        {/* Button */}
         <Button
           onClick={() => navigate("/onboarding/3")}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 rounded-xl glow-primary text-lg"
+          className="w-full h-14 rounded-2xl text-lg font-bold shadow-lg"
+          style={{ 
+            fontFamily: 'Inter, sans-serif',
+            backgroundColor: '#E8E8E8',
+            color: '#000000'
+          }}
         >
           Continue
         </Button>
+
+        {/* iOS Home Indicator Space */}
+        <div className="h-5" />
       </div>
     </div>
   );
