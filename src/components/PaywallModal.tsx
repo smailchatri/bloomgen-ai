@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Dialog, DialogContent } from "./ui/dialog";
 import { Button } from "./ui/button";
 import paywallBg from "@/assets/paywall_bg.png";
@@ -13,7 +14,11 @@ interface PaywallModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+type PricingPlan = "monthly" | "yearly";
+
 export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
+  const [selectedPlan, setSelectedPlan] = useState<PricingPlan>("monthly");
+
   const handleRestore = () => {
     // Placeholder for restore purchases logic
     console.log("Restore purchases");
@@ -21,7 +26,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
 
   const handleSubscribe = () => {
     // Placeholder for subscription logic
-    console.log("Subscribe clicked");
+    console.log("Subscribe to", selectedPlan);
   };
 
   return (
@@ -32,17 +37,25 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           background: '#000',
         }}
       >
-        {/* Background Image with Blur */}
-        <div 
-          className="absolute inset-0 w-full h-full"
-          style={{
-            backgroundImage: `url(${paywallBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'blur(40px)',
-            opacity: 0.6,
-          }}
-        />
+        {/* Background Image with Blur and Overlay */}
+        <div className="absolute inset-0 w-full h-full">
+          <div 
+            className="absolute inset-0 w-full h-full"
+            style={{
+              backgroundImage: `url(${paywallBg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              filter: 'blur(40px)',
+            }}
+          />
+          <div 
+            className="absolute inset-0 w-full h-full"
+            style={{
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          />
+        </div>
 
         {/* Close Button */}
         <button
@@ -67,15 +80,15 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Main Heading */}
-          <div className="text-center mb-10 px-4">
-            <h1 className="text-white text-3xl leading-tight mb-0" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <div className="text-center mb-10 px-6">
+            <h1 className="text-white leading-tight mb-0" style={{ fontFamily: 'Inter, sans-serif', fontSize: 'clamp(24px, 6vw, 30px)' }}>
               <span style={{ fontWeight: 900 }}>A subscription</span>{' '}
-              <span style={{ fontWeight: 300 }}>is required to</span>{' '}
+              <span style={{ fontWeight: 300 }}>is required to </span>
               <span 
                 style={{ 
                   fontWeight: 900,
                   fontStyle: 'italic',
-                  background: 'linear-gradient(90deg, #fff 0%, #CAFC80 100%)',
+                  background: 'linear-gradient(135deg, #fff 0%, #CAFC80 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -87,11 +100,17 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Benefits List */}
-          <div className="w-full max-w-md space-y-4 mb-8">
+          <div className="w-full max-w-md space-y-5 mb-8 px-6">
             {/* Benefit 1 */}
-            <div className="flex items-start gap-4 bg-black/40 backdrop-blur-md rounded-3xl p-4 border border-white/10">
-              <div className="w-14 h-14 rounded-full bg-black/60 flex items-center justify-center flex-shrink-0">
-                <img src={sparkleBenefit} alt="" className="w-8 h-8" />
+            <div className="flex items-start gap-4">
+              <div 
+                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ 
+                  backgroundColor: '#2B2A2A',
+                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <img src={sparkleBenefit} alt="" className="w-7 h-7" />
               </div>
               <div className="flex-1">
                 <h3 
@@ -117,9 +136,15 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             </div>
 
             {/* Benefit 2 */}
-            <div className="flex items-start gap-4 bg-black/40 backdrop-blur-md rounded-3xl p-4 border border-white/10">
-              <div className="w-14 h-14 rounded-full bg-black/60 flex items-center justify-center flex-shrink-0">
-                <img src={libraryBenefit} alt="" className="w-8 h-8" />
+            <div className="flex items-start gap-4">
+              <div 
+                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ 
+                  backgroundColor: '#2B2A2A',
+                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <img src={libraryBenefit} alt="" className="w-7 h-7" />
               </div>
               <div className="flex-1">
                 <h3 
@@ -145,9 +170,15 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             </div>
 
             {/* Benefit 3 */}
-            <div className="flex items-start gap-4 bg-black/40 backdrop-blur-md rounded-3xl p-4 border border-white/10">
-              <div className="w-14 h-14 rounded-full bg-black/60 flex items-center justify-center flex-shrink-0">
-                <img src={flameBenefit} alt="" className="w-8 h-8" />
+            <div className="flex items-start gap-4">
+              <div 
+                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ 
+                  backgroundColor: '#2B2A2A',
+                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <img src={flameBenefit} alt="" className="w-7 h-7" />
               </div>
               <div className="flex-1">
                 <h3 
@@ -173,9 +204,15 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             </div>
 
             {/* Benefit 4 */}
-            <div className="flex items-start gap-4 bg-black/40 backdrop-blur-md rounded-3xl p-4 border border-white/10">
-              <div className="w-14 h-14 rounded-full bg-black/60 flex items-center justify-center flex-shrink-0">
-                <img src={shieldBenefit} alt="" className="w-8 h-8" />
+            <div className="flex items-start gap-4">
+              <div 
+                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ 
+                  backgroundColor: '#2B2A2A',
+                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                <img src={shieldBenefit} alt="" className="w-7 h-7" />
               </div>
               <div className="flex-1">
                 <h3 
@@ -202,119 +239,141 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="w-full max-w-md flex gap-4 mb-6">
+          <div className="w-full max-w-md flex gap-4 mb-6 px-6">
             {/* Monthly Plan */}
-            <div className="flex-1 bg-black/40 backdrop-blur-md rounded-3xl p-5 border-2 border-[#CAFC80]">
+            <button
+              onClick={() => setSelectedPlan("monthly")}
+              className="flex-1 rounded-3xl p-5 transition-all"
+              style={{
+                backgroundColor: '#2B2A2A',
+                border: selectedPlan === "monthly" ? '2px solid #CAFC80' : '2px solid transparent',
+                transform: selectedPlan === "monthly" ? 'scale(1.03)' : 'scale(1)',
+              }}
+            >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[#CAFC80] text-lg">⭐</span>
+                <span className="text-[#CAFC80] text-base">⭐</span>
                 <span 
                   className="text-[#CAFC80]" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
-                    fontSize: '15px',
+                    fontSize: '14px',
                   }}
                 >
                   Pro monthly
                 </span>
               </div>
-              <div className="mb-2">
+              <div className="mb-1 text-left">
                 <span 
-                  className="text-white text-4xl"
+                  className="text-white"
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
+                    fontSize: '32px',
                   }}
                 >
                   $7.99
                 </span>
                 <span 
-                  className="text-white/70 text-lg"
+                  className="text-white/70"
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
+                    fontSize: '16px',
                   }}
                 >
                   /month
                 </span>
               </div>
               <p 
-                className="text-white/70 text-sm"
+                className="text-white/70 text-left"
                 style={{ 
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
                   fontStyle: 'italic',
+                  fontSize: '12px',
                 }}
               >
                 Perfect individual needs
               </p>
-            </div>
+            </button>
 
             {/* Yearly Plan */}
-            <div className="flex-1 bg-black/40 backdrop-blur-md rounded-3xl p-5 border border-white/20">
+            <button
+              onClick={() => setSelectedPlan("yearly")}
+              className="flex-1 rounded-3xl p-5 transition-all"
+              style={{
+                backgroundColor: '#2B2A2A',
+                border: selectedPlan === "yearly" ? '2px solid #CAFC80' : '2px solid transparent',
+                transform: selectedPlan === "yearly" ? 'scale(1.03)' : 'scale(1)',
+              }}
+            >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[#CAFC80] text-lg">⭐</span>
+                <span className="text-[#CAFC80] text-base">⭐</span>
                 <span 
                   className="text-[#CAFC80]" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
-                    fontSize: '15px',
+                    fontSize: '14px',
                   }}
                 >
                   Pro yearly
                 </span>
               </div>
-              <div className="mb-2">
+              <div className="mb-1 text-left">
                 <span 
-                  className="text-white text-4xl"
+                  className="text-white"
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
+                    fontSize: '32px',
                   }}
                 >
                   $49
                 </span>
                 <span 
-                  className="text-white/70 text-lg"
+                  className="text-white/70"
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
+                    fontSize: '16px',
                   }}
                 >
                   /year
                 </span>
               </div>
               <p 
-                className="text-white/70 text-sm"
+                className="text-white/70 text-left"
                 style={{ 
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
                   fontStyle: 'italic',
+                  fontSize: '12px',
                 }}
               >
                 Most users choose this
               </p>
-            </div>
+            </button>
           </div>
 
           {/* Subscribe Button */}
           <Button
             onClick={handleSubscribe}
-            className="w-full max-w-md h-16 rounded-3xl mb-6"
+            className="w-full max-w-md h-16 rounded-[28px] mb-6 mx-6 hover:opacity-90 transition-opacity"
             style={{
               backgroundColor: '#CAFC80',
               color: '#000',
               fontFamily: 'Inter, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
+              fontSize: '17px',
             }}
           >
             Subscribe to Pro
           </Button>
 
           {/* Footer Text */}
-          <div className="w-full max-w-md px-4 mb-4">
+          <div className="w-full max-w-md px-8 mb-4">
             <p 
               className="text-white/60 text-center text-xs leading-relaxed"
               style={{ 
