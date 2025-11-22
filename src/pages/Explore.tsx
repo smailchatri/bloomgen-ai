@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
+import { PaywallModal } from "@/components/PaywallModal";
 import { mockPrompts } from "@/data/mockPrompts";
 import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
@@ -11,8 +12,9 @@ const Explore = () => {
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
   const { toast } = useToast();
-  const isPro = true; // Treat all users as subscribed during development
+  const isPro = false; // Set to false to show paywall for non-Pro users
 
   const currentPrompt = mockPrompts[currentPromptIndex];
 
@@ -29,6 +31,13 @@ const Explore = () => {
   };
 
   const handleCopy = () => {
+    // Check if user has Pro subscription
+    if (!isPro) {
+      setShowPaywall(true);
+      return;
+    }
+    
+    // Only copy if user is Pro
     navigator.clipboard.writeText(currentPrompt.prompt_text);
     setCopied(true);
     setTimeout(() => {
@@ -101,6 +110,9 @@ const Explore = () => {
       </div>
 
       <BottomNav />
+      
+      {/* Paywall Modal */}
+      <PaywallModal open={showPaywall} onOpenChange={setShowPaywall} />
     </div>
   );
 };
