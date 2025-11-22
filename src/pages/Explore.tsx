@@ -5,11 +5,12 @@ import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
 import bookmarkUnsaved from "@/assets/bookmark_unsaved.png";
 import bookmarkSaved from "@/assets/library_green.png";
+import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Explore = () => {
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
-  const [buttonText, setButtonText] = useState("Copy Prompt ✨");
+  const [copied, setCopied] = useState(false);
   const { toast } = useToast();
   const isPro = true; // Treat all users as subscribed during development
 
@@ -23,13 +24,13 @@ const Explore = () => {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(currentPrompt.prompt_text);
-    setButtonText("Prompt Copied!");
+    setCopied(true);
     setTimeout(() => {
-      setButtonText("Copy Prompt ✨");
+      setCopied(false);
     }, 1500);
     toast({
       title: "Prompt copied!",
-      description: "Ready to create magic ✨",
+      description: "Ready to create magic",
       duration: 2000,
     });
   };
@@ -37,34 +38,47 @@ const Explore = () => {
   const isSaved = savedPrompts.includes(currentPrompt.id);
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-black relative">
-      {/* Fullscreen Image */}
-      <img
-        src={currentPrompt.image_url}
-        alt={currentPrompt.title}
-        className="w-full h-full object-cover absolute inset-0"
-      />
+    <div className="h-screen w-screen overflow-y-auto overflow-x-hidden bg-black relative pb-20">
+      {/* Scrollable Content */}
+      <div className="min-h-screen">
+        {mockPrompts.map((prompt, index) => (
+          <div key={prompt.id} className="h-screen w-full relative">
+            <img
+              src={prompt.image_url}
+              alt={prompt.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+      </div>
 
-      {/* Bottom Buttons Container with blur background */}
-      <div className="absolute bottom-20 left-0 right-0 flex items-center justify-center gap-4 px-6 pb-6">
+      {/* Fixed Bottom Buttons Container */}
+      <div className="fixed bottom-[88px] left-0 right-0 flex items-center justify-center gap-3 px-6 z-40">
         {/* Copy Prompt Button */}
         <button
           onClick={handleCopy}
-          className="flex-1 h-14 bg-black/60 backdrop-blur-md rounded-[28px] flex items-center justify-center text-white font-bold text-base transition-all hover:bg-black/70"
+          className="flex-1 max-w-[280px] h-[52px] bg-black/60 backdrop-blur-md rounded-[26px] border border-white/20 flex items-center justify-center gap-2 text-white font-bold text-[15px] transition-all hover:bg-black/70"
           style={{ fontFamily: 'Inter, sans-serif' }}
         >
-          {buttonText}
+          {copied ? (
+            "Prompt Copied!"
+          ) : (
+            <>
+              Copy Prompt
+              <img src={sparkleIcon} alt="" className="w-4 h-4" />
+            </>
+          )}
         </button>
 
         {/* Save Button */}
         <button
           onClick={() => handleSave(currentPrompt.id)}
-          className="w-14 h-14 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center transition-all hover:bg-black/70"
+          className="w-[52px] h-[52px] bg-black/60 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center transition-all hover:bg-black/70"
         >
           <img 
             src={isSaved ? bookmarkSaved : bookmarkUnsaved} 
             alt="Save" 
-            className="w-6 h-6"
+            className="w-5 h-5"
           />
         </button>
       </div>
