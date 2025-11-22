@@ -1,6 +1,7 @@
 import { BottomNav } from "@/components/BottomNav";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import personalBg from "@/assets/personal_bg.png";
 import userProfile from "@/assets/user_profile.png";
 import helpIcon from "@/assets/help_icon.png";
@@ -13,20 +14,32 @@ import logoutIcon from "@/assets/logout_icon.png";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const getUserName = () => {
+    return user?.email?.split('@')[0] || "User";
+  };
+
+  const getJoinDate = () => {
+    if (!user?.created_at) return "Recently";
+    const date = new Date(user.created_at);
+    const month = date.toLocaleString('en-US', { month: 'long' });
+    const year = date.getFullYear();
+    return `${month} ${year}`;
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('mockAuthUser');
-    localStorage.removeItem('hasSeenOnboarding');
     toast.success("Logged out successfully");
     navigate("/auth/login");
   };
 
   const handleDeleteAccount = () => {
-    window.location.href = "mailto:support@bloomgen.app?subject=Delete My Bloomgen Account";
+    window.location.href = "mailto:support@bloomgen.app?subject=Delete Account Request&body=I want to delete my account.";
   };
 
   const handleManageSubscription = () => {
-    window.open("https://bloomgen.app/support", '_blank');
+    window.open("https://bloomgen.app/policies", '_blank');
   };
 
   const openLink = (url: string) => {
@@ -37,12 +50,12 @@ const Profile = () => {
     <div className="h-screen w-screen relative overflow-hidden">
       {/* Fixed Background */}
       <div 
-        className="fixed inset-0 bg-center bg-no-repeat overflow-hidden"
+        className="fixed inset-0 overflow-hidden"
         style={{ 
           backgroundImage: `url(${personalBg})`,
           backgroundSize: 'cover',
-          transform: 'scale(1.1)',
-          transformOrigin: 'center center'
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       />
 
@@ -60,8 +73,12 @@ const Profile = () => {
               className="w-16 h-16 rounded-full"
             />
             <div>
-              <div className="text-white font-bold text-lg">The user name</div>
-              <div className="text-white/70 font-light italic text-sm">Joined in (x)</div>
+              <div className="text-white text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
+                {getUserName()}
+              </div>
+              <div className="text-white/70 text-sm" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontStyle: 'italic' }}>
+                Joined in {getJoinDate()}
+              </div>
             </div>
           </div>
 
@@ -73,7 +90,7 @@ const Profile = () => {
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={helpIcon} alt="" className="w-6 h-6" />
-              <span className="text-white font-semibold text-base">Get Help</span>
+              <span className="text-white text-base" style={{ fontWeight: 600 }}>Get Help</span>
             </button>
 
             <button
@@ -82,7 +99,7 @@ const Profile = () => {
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={guidelinesIcon} alt="" className="w-6 h-6" />
-              <span className="text-white font-semibold text-base">Community Guidelines</span>
+              <span className="text-white text-base" style={{ fontWeight: 600 }}>Community Guidelines</span>
             </button>
 
             <button
@@ -91,7 +108,7 @@ const Profile = () => {
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={faqIcon} alt="" className="w-6 h-6" />
-              <span className="text-white font-semibold text-base">FAQ</span>
+              <span className="text-white text-base" style={{ fontWeight: 600 }}>FAQ</span>
             </button>
 
             <button
@@ -100,7 +117,7 @@ const Profile = () => {
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
-              <span className="text-white font-semibold text-base">Delete Account</span>
+              <span className="text-white text-base" style={{ fontWeight: 600 }}>Delete Account</span>
             </button>
 
             <button
@@ -109,7 +126,7 @@ const Profile = () => {
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
-              <span className="text-white font-semibold text-base">Manage Subscription</span>
+              <span className="text-white text-base" style={{ fontWeight: 600 }}>Manage Subscription</span>
             </button>
 
             <button
@@ -118,7 +135,7 @@ const Profile = () => {
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={privacyIcon} alt="" className="w-6 h-6" />
-              <span className="text-white font-semibold text-base">Privacy Policy</span>
+              <span className="text-white text-base" style={{ fontWeight: 600 }}>Privacy Policy</span>
             </button>
           </div>
 
@@ -129,7 +146,7 @@ const Profile = () => {
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             <img src={termsIcon} alt="" className="w-6 h-6" />
-            <span className="text-white font-semibold text-base">Terms of Service</span>
+            <span className="text-white text-base" style={{ fontWeight: 600 }}>Terms of Service</span>
           </button>
 
           {/* Logout */}
@@ -139,7 +156,7 @@ const Profile = () => {
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             <img src={logoutIcon} alt="" className="w-6 h-6" />
-            <span className="text-white font-semibold text-base">Logout</span>
+            <span className="text-white text-base" style={{ fontWeight: 600 }}>Logout</span>
           </button>
         </div>
       </div>
