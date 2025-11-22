@@ -34,18 +34,6 @@ const Profile = () => {
     navigate("/auth/login");
   };
 
-  const handleDeleteAccount = () => {
-    window.location.href = "mailto:support@bloomgen.app?subject=Delete Account Request&body=I want to delete my account.";
-  };
-
-  const handleManageSubscription = () => {
-    window.open("https://bloomgen.app/policies", '_blank');
-  };
-
-  const openLink = (url: string) => {
-    window.open(url, '_blank');
-  };
-
   return (
     <div className="h-screen w-screen relative overflow-hidden">
       {/* Fixed Background */}
@@ -84,70 +72,82 @@ const Profile = () => {
 
           {/* Settings Rows */}
           <div className="space-y-3">
-            <button
-              onClick={() => openLink('https://bloomgen.app/support')}
+            <a
+              href="https://bloomgen.app/support"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={helpIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Get Help</span>
-            </button>
+            </a>
 
-            <button
-              onClick={() => openLink('https://bloomgen.app/policies')}
+            <a
+              href="https://bloomgen.app/policies"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={guidelinesIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Community Guidelines</span>
-            </button>
+            </a>
 
-            <button
-              onClick={() => openLink('https://bloomgen.app/support')}
+            <a
+              href="https://bloomgen.app/support"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={faqIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>FAQ</span>
-            </button>
+            </a>
 
-            <button
-              onClick={handleDeleteAccount}
+            <a
+              href="mailto:support@bloomgen.app?subject=Delete Account Request&body=I want to delete my account."
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Delete Account</span>
-            </button>
+            </a>
 
-            <button
-              onClick={handleManageSubscription}
+            <a
+              href="https://bloomgen.app/policies"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Manage Subscription</span>
-            </button>
+            </a>
 
-            <button
-              onClick={() => openLink('https://bloomgen.app/policies')}
+            <a
+              href="https://bloomgen.app/policies"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={privacyIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Privacy Policy</span>
-            </button>
+            </a>
           </div>
 
           {/* Terms of Service */}
-          <button
-            onClick={() => openLink('https://bloomgen.app/policies')}
+          <a
+            href="https://bloomgen.app/policies"
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70 mt-6"
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             <img src={termsIcon} alt="" className="w-6 h-6" />
             <span className="text-white text-base" style={{ fontWeight: 600 }}>Terms of Service</span>
-          </button>
+          </a>
 
           {/* Logout */}
           <button
