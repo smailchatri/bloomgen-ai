@@ -91,16 +91,6 @@ const Login = () => {
         {/* Social Login Buttons */}
         <div className="w-full space-y-3 px-6">
           <button
-            onClick={handleGoogleLogin}
-            disabled={isAuthenticating}
-            className="w-full h-14 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-[22px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
-            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
-          >
-            <img src={googleIcon} alt="Google" className="w-[14px] h-[14px] mr-3 flex-shrink-0" />
-            <span className="whitespace-nowrap">{isAuthenticating ? "Logging in..." : "Continue with Google"}</span>
-          </button>
-
-          <button
             onClick={handleAppleLogin}
             disabled={isAuthenticating}
             className="w-full h-14 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-[22px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
@@ -108,6 +98,16 @@ const Login = () => {
           >
             <img src={appleIcon} alt="Apple" className="w-[14px] h-[14px] mr-3 flex-shrink-0" />
             <span className="whitespace-nowrap">{isAuthenticating ? "Logging in..." : "Continue with Apple"}</span>
+          </button>
+
+          <button
+            onClick={handleGoogleLogin}
+            disabled={isAuthenticating}
+            className="w-full h-14 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-[22px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+          >
+            <img src={googleIcon} alt="Google" className="w-[14px] h-[14px] mr-3 flex-shrink-0" />
+            <span className="whitespace-nowrap">{isAuthenticating ? "Logging in..." : "Continue with Google"}</span>
           </button>
         </div>
 
