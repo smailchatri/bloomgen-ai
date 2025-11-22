@@ -2,19 +2,16 @@ import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { mockPrompts } from "@/data/mockPrompts";
 import { Prompt } from "@/types/prompt";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { PaywallModal } from "@/components/PaywallModal";
 import bloomgenLogo from "@/assets/bloomgen_logo.png";
+import bookmarkSaved from "@/assets/library_green.png";
+import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Library = () => {
-  const [savedPrompts] = useState<string[]>(["1", "3", "5"]); // Mock saved IDs
+  const [savedPrompts, setSavedPrompts] = useState<string[]>([]); // Start with empty library
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
-  const [paywallOpen, setPaywallOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { toast } = useToast();
-  const isPro = false;
 
   const savedItems = mockPrompts.filter(p => savedPrompts.includes(p.id));
   
@@ -26,40 +23,50 @@ const Library = () => {
     false, true, false   // Row 3: Gray, Green, Gray
   ];
 
-  const handleCopy = (prompt: Prompt) => {
-    if (isPro) {
-      navigator.clipboard.writeText(prompt.prompt_text);
+  const handleCopy = () => {
+    if (selectedPrompt) {
+      navigator.clipboard.writeText(selectedPrompt.prompt_text);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 1500);
       toast({
         title: "Prompt copied!",
-        description: "Ready to create magic ✨",
+        description: "Ready to create magic",
         duration: 2000,
       });
-    } else {
-      setPaywallOpen(true);
+    }
+  };
+
+  const handleUnsave = () => {
+    if (selectedPrompt) {
+      setSavedPrompts(prev => prev.filter(id => id !== selectedPrompt.id));
+      toast({
+        title: "Prompt removed!",
+        description: "Removed from library",
+        duration: 2000,
+      });
+      setSelectedPrompt(null);
     }
   };
 
   const handleItemClick = (prompt: Prompt) => {
-    // Copy to clipboard when tapping a saved item
-    navigator.clipboard.writeText(prompt.prompt_text);
-    toast({
-      title: "Prompt Copied!",
-      description: "Ready to create magic ✨",
-      duration: 2000,
-      className: "glass border-border",
-    });
+    setSelectedPrompt(prompt);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a2f1a] to-[#0a1f0a] pb-24">
-      <header className="px-6 pt-12 pb-8 text-center">
-        <div className="flex justify-center mb-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#0d1f0d] to-[#050f05] pb-24">
+      <header className="px-6 pt-12 pb-8">
+        <div className="flex items-center justify-center gap-3 mb-6">
           <img src={bloomgenLogo} alt="Bloomgen" className="h-12" />
+          <span className="text-white text-3xl tracking-wide" style={{ fontFamily: 'Inter', fontWeight: 900 }}>
+            BLOOMGEN
+          </span>
         </div>
-        <h1 className="text-white text-2xl tracking-wide mb-1" style={{ fontFamily: 'Inter', fontWeight: 900 }}>
+        <h1 className="text-white text-2xl tracking-wide mb-1 text-center" style={{ fontFamily: 'Inter', fontWeight: 900 }}>
           ALL YOUR SAVED PROMPTS
         </h1>
-        <h2 className="text-white text-2xl" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic' }}>
+        <h2 className="text-white text-2xl text-center" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic' }}>
           READY TO COPY!
         </h2>
       </header>
@@ -97,35 +104,58 @@ const Library = () => {
       </main>
 
       <BottomNav />
-      <PaywallModal open={paywallOpen} onOpenChange={setPaywallOpen} />
 
-      <Dialog open={!!selectedPrompt} onOpenChange={() => setSelectedPrompt(null)}>
-        <DialogContent className="glass border-border max-w-sm rounded-3xl p-0 overflow-hidden">
-          {selectedPrompt && (
-            <div className="relative">
-              <img
-                src={selectedPrompt.image_url}
-                alt={selectedPrompt.title}
-                className="w-full aspect-[3/4] object-cover"
+      {/* Full Screen Detail View */}
+      {selectedPrompt && (
+        <div className="fixed inset-0 bg-black z-50">
+          <button
+            onClick={() => setSelectedPrompt(null)}
+            className="absolute top-4 right-4 z-50 w-10 h-10 bg-black/60 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white text-xl"
+          >
+            ×
+          </button>
+          
+          <img
+            src={selectedPrompt.image_url}
+            alt={selectedPrompt.title}
+            className="w-full h-full object-cover"
+          />
+
+          {/* Fixed Bottom Buttons Container */}
+          <div 
+            className="fixed left-0 right-0 flex items-center justify-center gap-3 px-6 z-40"
+            style={{ bottom: 'calc(68px + env(safe-area-inset-bottom, 0px) + 48px)' }}
+          >
+            {/* Copy Prompt Button */}
+            <button
+              onClick={handleCopy}
+              className="flex-1 max-w-[280px] h-[52px] bg-black/60 backdrop-blur-md rounded-[26px] border border-white/20 flex items-center justify-center gap-2 text-white font-bold text-[15px] transition-all hover:bg-black/70"
+              style={{ fontFamily: 'Inter, sans-serif' }}
+            >
+              {copied ? (
+                "Prompt Copied!"
+              ) : (
+                <>
+                  Copy Prompt
+                  <img src={sparkleIcon} alt="" className="w-4 h-4" />
+                </>
+              )}
+            </button>
+
+            {/* Save Button (Always checked for saved items) */}
+            <button
+              onClick={handleUnsave}
+              className="w-[52px] h-[52px] bg-black/60 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center transition-all hover:bg-black/70"
+            >
+              <img 
+                src={bookmarkSaved} 
+                alt="Saved" 
+                className="w-5 h-5"
               />
-              <div className="p-6 space-y-4">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">{selectedPrompt.title}</h2>
-                  <p className="text-sm text-muted-foreground">{selectedPrompt.category}</p>
-                </div>
-                <p className="text-sm leading-relaxed">{selectedPrompt.prompt_text}</p>
-                <Button
-                  onClick={() => handleCopy(selectedPrompt)}
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-xl h-12 glow-primary"
-                >
-                  <Copy className="w-4 h-4 mr-2" />
-                  Copy Prompt ✨
-                </Button>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
