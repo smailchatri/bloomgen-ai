@@ -12,21 +12,21 @@ export const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 z-50 pb-safe">
-      <div className="flex items-center justify-around h-20 max-w-md mx-auto px-6">
+      <div className="flex items-center justify-around h-[88px] max-w-md mx-auto px-6">
         <Link
           to="/library"
-          className="flex flex-col items-center gap-1 transition-all"
+          className="flex flex-col items-center gap-0.5 transition-all"
         >
           <img 
             src={currentPath === "/library" ? libraryGreen : libraryGray} 
             alt="Library" 
-            className="w-6 h-6"
+            className="w-6 h-6 mb-0.5"
           />
           <span 
-            className={`text-xs ${
+            className={`text-[11px] leading-tight ${
               currentPath === "/library" 
                 ? "font-bold text-[#CAFC80]" 
-                : "font-normal text-[#B0B0B0]"
+                : "font-normal text-[#9C9C9C]"
             }`}
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
@@ -36,18 +36,18 @@ export const BottomNav = () => {
 
         <Link
           to="/explore"
-          className="flex flex-col items-center gap-1 transition-all"
+          className="flex flex-col items-center gap-0.5 transition-all"
         >
           <img 
             src={currentPath === "/explore" ? bloomgenLogoGreen : bloomgenLogoGray} 
             alt="Explore" 
-            className="w-10 h-10"
+            className="w-9 h-9 mb-0.5"
           />
           <span 
-            className={`text-xs ${
+            className={`text-[11px] leading-tight ${
               currentPath === "/explore" 
                 ? "font-bold text-[#CAFC80]" 
-                : "font-normal text-[#B0B0B0]"
+                : "font-normal text-[#9C9C9C]"
             }`}
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
@@ -57,18 +57,18 @@ export const BottomNav = () => {
 
         <Link
           to="/profile"
-          className="flex flex-col items-center gap-1 transition-all"
+          className="flex flex-col items-center gap-0.5 transition-all"
         >
           <img 
             src={currentPath === "/profile" ? personalGreen : personalGray} 
             alt="Personal" 
-            className="w-6 h-6"
+            className="w-6 h-6 mb-0.5"
           />
           <span 
-            className={`text-xs ${
+            className={`text-[11px] leading-tight ${
               currentPath === "/profile" 
                 ? "font-bold text-[#CAFC80]" 
-                : "font-normal text-[#B0B0B0]"
+                : "font-normal text-[#9C9C9C]"
             }`}
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
