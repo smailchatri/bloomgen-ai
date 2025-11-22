@@ -13,6 +13,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const ONBOARDING_KEY = 'hasSeenOnboarding';
+const MOCK_USER_KEY = 'mockAuthUser';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -23,6 +24,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
+    // Check for mock user first (development bypass)
+    const mockUserStr = localStorage.getItem(MOCK_USER_KEY);
+    if (mockUserStr) {
+      try {
+        const mockUser = JSON.parse(mockUserStr);
+        setUser(mockUser as User);
+        setHasSeenOnboarding(true);
+        setLoading(false);
+        return;
+      } catch (e) {
+        localStorage.removeItem(MOCK_USER_KEY);
+      }
+    }
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
