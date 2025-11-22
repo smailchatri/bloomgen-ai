@@ -79,8 +79,8 @@ const Login = () => {
         </div>
 
         {/* Title */}
-        <h1 className="text-white text-[32px] font-bold text-center mb-4 leading-tight">
-          Welcome to BLOOMGEN<br />Login now!
+        <h1 className="text-white text-[32px] font-bold text-center mb-4 leading-tight max-w-[340px]">
+          Welcome to BLOOMGEN Login now!
         </h1>
 
         {/* Subtitle */}
@@ -93,18 +93,18 @@ const Login = () => {
           <button
             onClick={handleAppleLogin}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-6"
           >
-            <img src={appleIcon} alt="Apple" className="w-5 h-auto mr-3" />
+            <img src={appleIcon} alt="Apple" className="w-4 h-auto mr-3" />
             {isAuthenticating ? "Logging in..." : "Continue with Apple"}
           </button>
 
           <button
             onClick={handleGoogleLogin}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-6"
           >
-            <img src={googleIcon} alt="Google" className="w-5 h-5 mr-3" />
+            <img src={googleIcon} alt="Google" className="w-4 h-4 mr-3" />
             {isAuthenticating ? "Logging in..." : "Continue with Google"}
           </button>
         </div>
