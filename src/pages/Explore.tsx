@@ -63,7 +63,7 @@ const Explore = () => {
       {/* Fixed Bottom Buttons Container */}
       <div 
         className="fixed left-0 right-0 flex items-center justify-center gap-3 px-6 z-40"
-        style={{ bottom: 'calc(88px + env(safe-area-inset-bottom, 0px) + 20px)' }}
+        style={{ bottom: 'calc(68px + env(safe-area-inset-bottom, 0px) + 36px)' }}
       >
         {/* Copy Prompt Button */}
         <button

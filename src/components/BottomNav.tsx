@@ -12,7 +12,7 @@ export const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 z-50 pb-safe">
-      <div className="flex items-center justify-around h-[88px] max-w-md mx-auto px-6">
+      <div className="flex items-center justify-around h-[68px] max-w-md mx-auto px-6">
         <Link
           to="/library"
           className="flex flex-col items-center gap-1 transition-all"
