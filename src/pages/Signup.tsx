@@ -4,13 +4,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import signupHero from "@/assets/signup_hero.png";
-import appleIcon from "@/assets/apple_icon.png";
 import googleIcon from "@/assets/google_icon.webp";
 
 const Signup = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (user && !loading) {
@@ -18,21 +19,37 @@ const Signup = () => {
     }
   }, [user, loading, navigate]);
 
-  const handleAppleSignup = async () => {
+  const handleEmailSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     try {
       setIsAuthenticating(true);
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'apple',
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
         options: {
-          redirectTo: `${window.location.origin}/explore`,
+          emailRedirectTo: `${window.location.origin}/explore`,
         },
       });
       
       if (error) {
         toast.error(error.message);
+      } else {
+        toast.success("Account created! Please check your email to verify.");
+        navigate("/explore");
       }
     } catch (error) {
-      toast.error("Failed to sign up with Apple");
+      toast.error("Failed to sign up");
     } finally {
       setIsAuthenticating(false);
     }
@@ -88,18 +105,47 @@ const Signup = () => {
           Sign up to instantly access powerful prompts, save your favorite custom styles, Your inspiration starts here.
         </p>
 
-        {/* Buttons */}
-        <div className="w-full space-y-3 px-6">
-          <button
-            onClick={handleAppleSignup}
+        {/* Sign Up Form */}
+        <form onSubmit={handleEmailSignup} className="w-full space-y-3 px-6">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-[22px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
+            className="w-full h-14 bg-[#2A2A2A] rounded-[22px] text-white font-normal text-[16px] px-6 outline-none focus:ring-2 focus:ring-[#CAFC80] disabled:opacity-50"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+          />
+          
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            disabled={isAuthenticating}
+            className="w-full h-14 bg-[#2A2A2A] rounded-[22px] text-white font-normal text-[16px] px-6 outline-none focus:ring-2 focus:ring-[#CAFC80] disabled:opacity-50"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+          />
+
+          <button
+            type="submit"
+            disabled={isAuthenticating}
+            className="w-full h-14 bg-[#CAFC80] hover:bg-[#B8E670] rounded-[22px] flex items-center justify-center text-black font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
             style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
           >
-            <img src={appleIcon} alt="Apple" className="w-[14px] h-auto mr-3 flex-shrink-0" />
-            <span className="whitespace-nowrap">{isAuthenticating ? "Signing up..." : "Sign up with Apple"}</span>
+            <span className="whitespace-nowrap">{isAuthenticating ? "Signing up..." : "Sign up"}</span>
           </button>
+        </form>
 
+        {/* Divider */}
+        <div className="w-full px-6 flex items-center gap-4 my-4">
+          <div className="flex-1 h-px bg-[#2A2A2A]"></div>
+          <span className="text-[#A1A1A1] text-[14px]" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}>or</span>
+          <div className="flex-1 h-px bg-[#2A2A2A]"></div>
+        </div>
+
+        {/* Google Button */}
+        <div className="w-full px-6">
           <button
             onClick={handleGoogleSignup}
             disabled={isAuthenticating}
