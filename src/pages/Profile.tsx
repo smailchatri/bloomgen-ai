@@ -26,7 +26,7 @@ const Profile = () => {
   };
 
   const handleManageSubscription = () => {
-    alert("Subscription management will be enabled later.");
+    window.open("https://bloomgen.app/support", '_blank');
   };
 
   const openLink = (url: string) => {
@@ -37,8 +37,13 @@ const Profile = () => {
     <div className="h-screen w-screen relative overflow-hidden">
       {/* Fixed Background */}
       <div 
-        className="fixed inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${personalBg})` }}
+        className="fixed inset-0 bg-center bg-no-repeat overflow-hidden"
+        style={{ 
+          backgroundImage: `url(${personalBg})`,
+          backgroundSize: 'cover',
+          transform: 'scale(1.1)',
+          transformOrigin: 'center center'
+        }}
       />
 
       {/* Scrollable Content */}
