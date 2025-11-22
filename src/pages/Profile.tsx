@@ -1,6 +1,9 @@
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { useState } from "react";
 import { 
   HelpCircle, 
   FileText, 
@@ -14,6 +17,25 @@ import {
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Logged out successfully");
+        navigate("/auth/login");
+      }
+    } catch (error) {
+      toast.error("Failed to logout");
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
 
   const menuItems = [
     { icon: HelpCircle, label: "Get Help", href: "#" },
@@ -55,11 +77,12 @@ const Profile = () => {
         </div>
 
         <Button
-          onClick={() => navigate("/onboarding/1")}
-          className="w-full mt-6 glass hover:bg-card border border-border h-14 rounded-xl font-semibold transition-smooth"
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="w-full mt-6 glass hover:bg-card border border-border h-14 rounded-xl font-semibold transition-smooth disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <LogOut className="w-5 h-5 mr-2" />
-          Logout
+          {isLoggingOut ? "Logging out..." : "Logout"}
         </Button>
       </main>
 
