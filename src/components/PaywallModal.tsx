@@ -33,13 +33,14 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="max-w-full w-full h-full p-0 border-0 rounded-none overflow-y-auto fixed inset-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 data-[state=closed]:slide-out-to-bottom-0"
+        className="max-w-full w-full h-full p-0 border-0 rounded-none overflow-hidden fixed inset-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 data-[state=closed]:slide-out-to-bottom-0"
         style={{
           background: '#000',
+          height: '100dvh',
           maxHeight: '100dvh',
         }}
       >
-        {/* Background Image with Blur and Overlay */}
+        {/* Background Image */}
         <div className="absolute inset-0 w-full h-full">
           <div 
             className="absolute inset-0 w-full h-full"
@@ -48,13 +49,12 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               backgroundRepeat: 'no-repeat',
-              filter: 'blur(40px)',
             }}
           />
           <div 
             className="absolute inset-0 w-full h-full"
             style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%)',
             }}
           />
         </div>
@@ -72,13 +72,18 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
         </button>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center px-6 pb-12 min-h-screen" style={{ paddingTop: 'max(3rem, env(safe-area-inset-top))' }}>
+        <div className="relative z-10 flex flex-col items-center h-full overflow-hidden" style={{ 
+          paddingTop: 'max(3.5rem, env(safe-area-inset-top) + 2rem)',
+          paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom) + 1rem)',
+          paddingLeft: '1.5rem',
+          paddingRight: '1.5rem',
+        }}>
           {/* Star Shield Badge */}
-          <div className="mb-6 mt-4">
+          <div className="mb-4">
             <img 
               src={starShield} 
               alt="Premium" 
-              className="w-24 h-24"
+              className="w-20 h-20"
               style={{
                 filter: 'drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5))',
               }}
@@ -86,8 +91,8 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Main Heading */}
-          <div className="text-center mb-8 px-6">
-            <h1 className="text-white leading-tight mb-0" style={{ fontFamily: 'Inter, sans-serif', fontSize: 'clamp(22px, 5.5vw, 28px)' }}>
+          <div className="text-center mb-5">
+            <h1 className="text-white leading-tight mb-0" style={{ fontFamily: 'Inter, sans-serif', fontSize: '24px' }}>
               <span style={{ fontWeight: 900 }}>A subscription</span>{' '}
               <span style={{ fontWeight: 300 }}>is required to </span>
               <span 
@@ -106,34 +111,35 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Benefits List */}
-          <div className="w-full max-w-md space-y-4 mb-6 px-6">
+          <div className="w-full max-w-md space-y-3 mb-5 flex-shrink-0">
             {/* Benefit 1 */}
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3">
               <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ 
                   backgroundColor: '#2B2A2A',
-                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <img src={sparkleBenefit} alt="" className="w-7 h-7" />
+                <img src={sparkleBenefit} alt="" className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h3 
-                  className="text-lg mb-1" 
+                  className="mb-0.5" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
                     color: '#CAFC80',
+                    fontSize: '16px',
                   }}
                 >
                   Unlimited Prompts Copies
                 </h3>
                 <p 
-                  className="text-sm text-white/80" 
+                  className="text-white/80" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 300,
+                    fontSize: '13px',
                   }}
                 >
                   Copy and paste over 1000+ viral prompt instantly.
@@ -142,32 +148,33 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             </div>
 
             {/* Benefit 2 */}
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3">
               <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ 
                   backgroundColor: '#2B2A2A',
-                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <img src={libraryBenefit} alt="" className="w-7 h-7" />
+                <img src={libraryBenefit} alt="" className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h3 
-                  className="text-lg mb-1" 
+                  className="mb-0.5" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
                     color: '#CAFC80',
+                    fontSize: '16px',
                   }}
                 >
                   Full Library Access
                 </h3>
                 <p 
-                  className="text-sm text-white/80" 
+                  className="text-white/80" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 300,
+                    fontSize: '13px',
                   }}
                 >
                   Save every inspiring style and prompt to your Library.
@@ -176,32 +183,33 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             </div>
 
             {/* Benefit 3 */}
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3">
               <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ 
                   backgroundColor: '#2B2A2A',
-                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <img src={flameBenefit} alt="" className="w-7 h-7" />
+                <img src={flameBenefit} alt="" className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h3 
-                  className="text-lg mb-1" 
+                  className="mb-0.5" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
                     color: '#CAFC80',
+                    fontSize: '16px',
                   }}
                 >
                   Exclusive Viral Prompts
                 </h3>
                 <p 
-                  className="text-sm text-white/80" 
+                  className="text-white/80" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 300,
+                    fontSize: '13px',
                   }}
                 >
                   Be the first to access new viral prompts added daily by our curators.
@@ -210,32 +218,33 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             </div>
 
             {/* Benefit 4 */}
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3">
               <div 
-                className="w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0"
+                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ 
                   backgroundColor: '#2B2A2A',
-                  boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
-                <img src={shieldBenefit} alt="" className="w-7 h-7" />
+                <img src={shieldBenefit} alt="" className="w-6 h-6" />
               </div>
               <div className="flex-1">
                 <h3 
-                  className="text-lg mb-1" 
+                  className="mb-0.5" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
                     color: '#CAFC80',
+                    fontSize: '16px',
                   }}
                 >
                   Secure Progress Sync
                 </h3>
                 <p 
-                  className="text-sm text-white/80" 
+                  className="text-white/80" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 300,
+                    fontSize: '13px',
                   }}
                 >
                   Never lose your saved styles. Your account syncs automatically across all your devices.
@@ -245,37 +254,37 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="w-full max-w-md flex gap-3 mb-6 px-6">
+          <div className="w-full max-w-md flex gap-3 mb-4 flex-shrink-0">
             {/* Monthly Plan */}
             <button
               onClick={() => setSelectedPlan("monthly")}
-              className="flex-1 rounded-3xl p-4 transition-all"
+              className="flex-1 rounded-3xl p-3 transition-all"
               style={{
                 backgroundColor: '#2B2A2A',
                 border: selectedPlan === "monthly" ? '2px solid #CAFC80' : '2px solid transparent',
-                transform: selectedPlan === "monthly" ? 'scale(1.03)' : 'scale(1)',
+                transform: selectedPlan === "monthly" ? 'scale(1.02)' : 'scale(1)',
               }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <img src={starIcon} alt="" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <img src={starIcon} alt="" className="w-3.5 h-3.5" />
                 <span 
                   className="text-[#CAFC80]" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
-                    fontSize: '13px',
+                    fontSize: '12px',
                   }}
                 >
                   Pro monthly
                 </span>
               </div>
-              <div className="mb-1 text-left">
+              <div className="mb-0.5 text-left">
                 <span 
                   className="text-white"
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '28px',
+                    fontSize: '24px',
                   }}
                 >
                   $7.99
@@ -285,7 +294,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '14px',
+                    fontSize: '12px',
                   }}
                 >
                   /month
@@ -297,7 +306,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
                   fontStyle: 'italic',
-                  fontSize: '11px',
+                  fontSize: '10px',
                 }}
               >
                 Perfect individual needs
@@ -307,33 +316,33 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             {/* Yearly Plan */}
             <button
               onClick={() => setSelectedPlan("yearly")}
-              className="flex-1 rounded-3xl p-4 transition-all"
+              className="flex-1 rounded-3xl p-3 transition-all"
               style={{
                 backgroundColor: '#2B2A2A',
                 border: selectedPlan === "yearly" ? '2px solid #CAFC80' : '2px solid transparent',
-                transform: selectedPlan === "yearly" ? 'scale(1.03)' : 'scale(1)',
+                transform: selectedPlan === "yearly" ? 'scale(1.02)' : 'scale(1)',
               }}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <img src={starIcon} alt="" className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <img src={starIcon} alt="" className="w-3.5 h-3.5" />
                 <span 
                   className="text-[#CAFC80]" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
-                    fontSize: '13px',
+                    fontSize: '12px',
                   }}
                 >
                   Pro yearly
                 </span>
               </div>
-              <div className="mb-1 text-left">
+              <div className="mb-0.5 text-left">
                 <span 
                   className="text-white"
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '28px',
+                    fontSize: '24px',
                   }}
                 >
                   $49
@@ -343,7 +352,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '14px',
+                    fontSize: '12px',
                   }}
                 >
                   /year
@@ -355,7 +364,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
                   fontStyle: 'italic',
-                  fontSize: '11px',
+                  fontSize: '10px',
                 }}
               >
                 Most users choose this
@@ -366,36 +375,34 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           {/* Subscribe Button */}
           <Button
             onClick={handleSubscribe}
-            className="w-full max-w-md h-14 rounded-[28px] mb-5 mx-6 hover:opacity-90 transition-opacity"
+            className="w-full max-w-md h-12 rounded-[24px] mb-3 hover:opacity-90 transition-opacity flex-shrink-0"
             style={{
               backgroundColor: '#CAFC80',
               color: '#000',
               fontFamily: 'Inter, sans-serif',
               fontWeight: 600,
-              fontSize: '16px',
+              fontSize: '15px',
             }}
           >
             Subscribe to Pro
           </Button>
 
           {/* Footer Text */}
-          <div className="w-full max-w-md px-8 mb-3">
+          <div className="w-full max-w-md px-4 mb-2 flex-shrink-0">
             <p 
-              className="text-white/60 text-center leading-relaxed"
+              className="text-white/60 text-center leading-snug"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 300,
-                fontSize: '10px',
+                fontSize: '9px',
               }}
             >
-              Payment will be charged to your iTunes Account at confirmation of purchase.
-              Subscription auto-renews unless canceled at least 24 hours before the end of the
-              current period.
+              Payment will be charged to your iTunes Account at confirmation of purchase. Subscription auto-renews unless canceled at least 24 hours before the end of the current period.
             </p>
           </div>
 
           {/* Footer Links */}
-          <div className="flex items-center justify-center gap-3 mb-6 flex-wrap">
+          <div className="flex items-center justify-center gap-2 flex-wrap flex-shrink-0">
             <a 
               href="https://bloomgen.app/policies" 
               target="_blank" 
@@ -404,12 +411,12 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
-                fontSize: '12px',
+                fontSize: '11px',
               }}
             >
               Terms of Service
             </a>
-            <span className="text-white/40">•</span>
+            <span className="text-white/40" style={{ fontSize: '11px' }}>•</span>
             <a 
               href="https://bloomgen.app/policies" 
               target="_blank" 
@@ -418,19 +425,19 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
-                fontSize: '12px',
+                fontSize: '11px',
               }}
             >
               Privacy Policy
             </a>
-            <span className="text-white/40">•</span>
+            <span className="text-white/40" style={{ fontSize: '11px' }}>•</span>
             <button 
               onClick={handleRestore}
               className="text-white"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
-                fontSize: '12px',
+                fontSize: '11px',
               }}
             >
               Restore Purchases
