@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
-import { PromptCard } from "@/components/PromptCard";
-import { PaywallModal } from "@/components/PaywallModal";
 import { mockPrompts } from "@/data/mockPrompts";
 import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import bookmarkUnsaved from "@/assets/bookmark_unsaved.png";
+import bookmarkSaved from "@/assets/library_green.png";
 
 const Explore = () => {
   const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
-  const [paywallOpen, setPaywallOpen] = useState(false);
-  const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
+  const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
+  const [buttonText, setButtonText] = useState("Copy Prompt ✨");
   const { toast } = useToast();
-  const isPro = false; // Placeholder for subscription status
+  const isPro = true; // Treat all users as subscribed during development
+
+  const currentPrompt = mockPrompts[currentPromptIndex];
 
   const handleSave = (id: string) => {
     setSavedPrompts(prev =>
@@ -20,65 +21,55 @@ const Explore = () => {
     );
   };
 
-  const handleCopy = (prompt: Prompt) => {
-    if (isPro) {
-      navigator.clipboard.writeText(prompt.prompt_text);
-      toast({
-        title: "Prompt copied!",
-        description: "Ready to create magic ✨",
-        duration: 2000,
-      });
-    } else {
-      setPaywallOpen(true);
-    }
+  const handleCopy = () => {
+    navigator.clipboard.writeText(currentPrompt.prompt_text);
+    setButtonText("Prompt Copied!");
+    setTimeout(() => {
+      setButtonText("Copy Prompt ✨");
+    }, 1500);
+    toast({
+      title: "Prompt copied!",
+      description: "Ready to create magic ✨",
+      duration: 2000,
+    });
   };
 
-  return (
-    <div className="min-h-screen gradient-bg pb-24">
-      <header className="glass border-b border-border sticky top-0 z-40">
-        <div className="max-w-md mx-auto px-6 h-16 flex items-center justify-center">
-          <h1 className="text-xl font-bold">BLOOMGEN</h1>
-        </div>
-      </header>
+  const isSaved = savedPrompts.includes(currentPrompt.id);
 
-      <main className="max-w-md mx-auto px-6 py-6">
-        <div className="space-y-6">
-          {mockPrompts.map((prompt) => (
-            <PromptCard
-              key={prompt.id}
-              prompt={prompt}
-              isSaved={savedPrompts.includes(prompt.id)}
-              onSave={handleSave}
-              onCopy={handleCopy}
-              onClick={setSelectedPrompt}
-            />
-          ))}
-        </div>
-      </main>
+  return (
+    <div className="h-screen w-screen overflow-hidden bg-black relative">
+      {/* Fullscreen Image */}
+      <img
+        src={currentPrompt.image_url}
+        alt={currentPrompt.title}
+        className="w-full h-full object-cover absolute inset-0"
+      />
+
+      {/* Bottom Buttons Container with blur background */}
+      <div className="absolute bottom-20 left-0 right-0 flex items-center justify-center gap-4 px-6 pb-6">
+        {/* Copy Prompt Button */}
+        <button
+          onClick={handleCopy}
+          className="flex-1 h-14 bg-black/60 backdrop-blur-md rounded-[28px] flex items-center justify-center text-white font-bold text-base transition-all hover:bg-black/70"
+          style={{ fontFamily: 'Inter, sans-serif' }}
+        >
+          {buttonText}
+        </button>
+
+        {/* Save Button */}
+        <button
+          onClick={() => handleSave(currentPrompt.id)}
+          className="w-14 h-14 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center transition-all hover:bg-black/70"
+        >
+          <img 
+            src={isSaved ? bookmarkSaved : bookmarkUnsaved} 
+            alt="Save" 
+            className="w-6 h-6"
+          />
+        </button>
+      </div>
 
       <BottomNav />
-      <PaywallModal open={paywallOpen} onOpenChange={setPaywallOpen} />
-
-      <Dialog open={!!selectedPrompt} onOpenChange={() => setSelectedPrompt(null)}>
-        <DialogContent className="glass border-border max-w-sm rounded-3xl p-0 overflow-hidden">
-          {selectedPrompt && (
-            <div className="relative">
-              <img
-                src={selectedPrompt.image_url}
-                alt={selectedPrompt.title}
-                className="w-full aspect-[3/4] object-cover"
-              />
-              <div className="p-6 space-y-4">
-                <div>
-                  <h2 className="text-2xl font-bold mb-2">{selectedPrompt.title}</h2>
-                  <p className="text-sm text-muted-foreground">{selectedPrompt.category}</p>
-                </div>
-                <p className="text-sm leading-relaxed">{selectedPrompt.prompt_text}</p>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
