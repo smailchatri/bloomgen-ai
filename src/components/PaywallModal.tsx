@@ -32,9 +32,10 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="max-w-full w-full h-screen p-0 border-0 rounded-none overflow-y-auto"
+        className="max-w-full w-full h-screen p-0 border-0 rounded-none overflow-y-auto fixed inset-0"
         style={{
           background: '#000',
+          maxHeight: '100dvh',
         }}
       >
         {/* Background Image with Blur and Overlay */}
@@ -60,13 +61,17 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
         {/* Close Button */}
         <button
           onClick={() => onOpenChange(false)}
-          className="absolute top-6 right-6 z-50 w-10 h-10 flex items-center justify-center"
+          className="absolute z-50 w-10 h-10 flex items-center justify-center"
+          style={{
+            top: 'max(1.5rem, env(safe-area-inset-top) + 1rem)',
+            right: '1.5rem',
+          }}
         >
           <img src={closeIcon} alt="Close" className="w-8 h-8" />
         </button>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center px-6 py-12 min-h-screen">
+        <div className="relative z-10 flex flex-col items-center px-6 pb-12 min-h-screen" style={{ paddingTop: 'max(3rem, env(safe-area-inset-top))' }}>
           {/* Star Shield Badge */}
           <div className="mb-8 mt-8">
             <img 
