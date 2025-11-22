@@ -7,19 +7,19 @@ const Onboarding2 = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen gradient-bg flex flex-col items-center justify-between px-6 py-8 pt-safe pb-safe">
+    <div className="h-screen gradient-bg flex flex-col items-center justify-between px-5 pt-safe pb-safe overflow-hidden">
       {/* Logo */}
-      <div className="flex items-center gap-3 flex-shrink-0">
-        <img src={bloomgenLogo} alt="Bloomgen" className="w-8 h-8" />
-        <h1 className="text-white text-2xl font-black tracking-tight">
+      <div className="flex items-center gap-2.5 flex-shrink-0 pt-3">
+        <img src={bloomgenLogo} alt="Bloomgen" className="w-7 h-7" />
+        <h1 className="text-white text-xl font-black tracking-tight">
           BLOOMGEN
         </h1>
       </div>
 
       {/* Center Content */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md -mt-4">
         {/* Hero Image */}
-        <div className="w-full mb-6">
+        <div className="w-full px-2 mb-5">
           <img 
             src={onboardingImage} 
             alt="Copy and paste prompts" 
@@ -28,18 +28,18 @@ const Onboarding2 = () => {
         </div>
 
         {/* Text Content */}
-        <div className="text-center space-y-3 px-2">
-          <h2 className="text-white text-[26px] leading-tight font-black tracking-tight">
+        <div className="text-center space-y-2.5 px-4">
+          <h2 className="text-white text-[22px] leading-[1.2] font-black tracking-tight">
             COPY & PASTE INTO ANY AI AND GET STUNNING IMAGES
           </h2>
-          <p className="text-white/80 text-[15px] leading-relaxed font-normal">
+          <p className="text-white/75 text-[14px] leading-relaxed font-normal">
             Copy and paste powerful prompts into any AI to turn your selfies into stunning images.
           </p>
         </div>
       </div>
 
       {/* Bottom Section */}
-      <div className="w-full max-w-md space-y-5 flex-shrink-0">
+      <div className="w-full max-w-md space-y-4 flex-shrink-0 pb-2">
         {/* Progress Indicators */}
         <div className="flex justify-center gap-2">
           <div className="w-8 h-2 rounded-full bg-white/20" />
@@ -50,7 +50,7 @@ const Onboarding2 = () => {
         {/* Button */}
         <Button
           onClick={() => navigate("/onboarding/3")}
-          className="w-full h-14 rounded-[20px] text-base font-bold shadow-lg bg-white text-black hover:bg-white/90"
+          className="w-full h-14 rounded-[20px] text-[17px] font-bold shadow-lg bg-white text-black hover:bg-white/90"
         >
           Continue
         </Button>
