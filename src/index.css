@@ -82,23 +82,12 @@ All colors MUST be HSL.
     box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3);
   }
 
-  /* Premium animated gradient background */
+  /* Premium background with image */
   .gradient-bg {
-    background: radial-gradient(ellipse at top, hsl(140, 35%, 15%) 0%, hsl(145, 30%, 10%) 30%, hsl(0, 0%, 6%) 70%, hsl(0, 0%, 3%) 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 20s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% {
-      background-position: 0% 0%;
-    }
-    50% {
-      background-position: 100% 100%;
-    }
-    100% {
-      background-position: 0% 0%;
-    }
+    background-image: url('/src/assets/onboarding_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   /* Smooth iOS-style transitions */
