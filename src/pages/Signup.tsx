@@ -93,18 +93,20 @@ const Signup = () => {
           <button
             onClick={handleAppleSignup}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-6"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
           >
-            <img src={appleIcon} alt="Apple" className="w-4 h-auto mr-3" />
+            <img src={appleIcon} alt="Apple" className="w-[14px] h-auto mr-3" />
             {isAuthenticating ? "Signing up..." : "Sign up with Apple"}
           </button>
 
           <button
             onClick={handleGoogleSignup}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-6"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12"
+            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
           >
-            <img src={googleIcon} alt="Google" className="w-4 h-4 mr-3" />
+            <img src={googleIcon} alt="Google" className="w-[14px] h-[14px] mr-3" />
             {isAuthenticating ? "Signing up..." : "Sign up with Google"}
           </button>
         </div>
