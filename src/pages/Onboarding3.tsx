@@ -10,17 +10,17 @@ const Onboarding3 = () => {
   return (
     <div className="h-screen gradient-bg flex flex-col items-center justify-between px-5 pt-safe pb-safe overflow-hidden">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 flex-shrink-0 pt-3">
-        <img src={bloomgenLogo} alt="Bloomgen" className="w-7 h-7" />
-        <h1 className="text-white text-xl font-black tracking-tight">
+      <div className="flex items-center gap-2.5 flex-shrink-0 pt-6">
+        <img src={bloomgenLogo} alt="Bloomgen" className="w-9 h-9" />
+        <h1 className="text-white text-[22px] font-black tracking-tight">
           BLOOMGEN
         </h1>
       </div>
 
       {/* Center Content */}
-      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md -mt-4">
+      <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md -mt-8">
         {/* Hero Image */}
-        <div className="w-full px-2 mb-5">
+        <div className="w-full px-1 mb-6">
           <img 
             src={onboardingImage} 
             alt="Viral AI prompts" 
