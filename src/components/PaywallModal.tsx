@@ -8,6 +8,7 @@ import sparkleBenefit from "@/assets/sparkle_benefit.png";
 import libraryBenefit from "@/assets/library_benefit.png";
 import flameBenefit from "@/assets/flame_benefit.png";
 import shieldBenefit from "@/assets/shield_benefit.png";
+import starIcon from "@/assets/star_icon.png";
 
 interface PaywallModalProps {
   open: boolean;
@@ -32,7 +33,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="max-w-full w-full h-screen p-0 border-0 rounded-none overflow-y-auto fixed inset-0"
+        className="max-w-full w-full h-full p-0 border-0 rounded-none overflow-y-auto fixed inset-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 data-[state=closed]:slide-out-to-bottom-0"
         style={{
           background: '#000',
           maxHeight: '100dvh',
@@ -73,11 +74,11 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
         {/* Content */}
         <div className="relative z-10 flex flex-col items-center px-6 pb-12 min-h-screen" style={{ paddingTop: 'max(3rem, env(safe-area-inset-top))' }}>
           {/* Star Shield Badge */}
-          <div className="mb-8 mt-8">
+          <div className="mb-6 mt-4">
             <img 
               src={starShield} 
               alt="Premium" 
-              className="w-28 h-28"
+              className="w-24 h-24"
               style={{
                 filter: 'drop-shadow(0 8px 20px rgba(0, 0, 0, 0.5))',
               }}
@@ -85,8 +86,8 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Main Heading */}
-          <div className="text-center mb-10 px-6">
-            <h1 className="text-white leading-tight mb-0" style={{ fontFamily: 'Inter, sans-serif', fontSize: 'clamp(24px, 6vw, 30px)' }}>
+          <div className="text-center mb-8 px-6">
+            <h1 className="text-white leading-tight mb-0" style={{ fontFamily: 'Inter, sans-serif', fontSize: 'clamp(22px, 5.5vw, 28px)' }}>
               <span style={{ fontWeight: 900 }}>A subscription</span>{' '}
               <span style={{ fontWeight: 300 }}>is required to </span>
               <span 
@@ -105,7 +106,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Benefits List */}
-          <div className="w-full max-w-md space-y-5 mb-8 px-6">
+          <div className="w-full max-w-md space-y-4 mb-6 px-6">
             {/* Benefit 1 */}
             <div className="flex items-start gap-4">
               <div 
@@ -244,11 +245,11 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Pricing Cards */}
-          <div className="w-full max-w-md flex gap-4 mb-6 px-6">
+          <div className="w-full max-w-md flex gap-3 mb-6 px-6">
             {/* Monthly Plan */}
             <button
               onClick={() => setSelectedPlan("monthly")}
-              className="flex-1 rounded-3xl p-5 transition-all"
+              className="flex-1 rounded-3xl p-4 transition-all"
               style={{
                 backgroundColor: '#2B2A2A',
                 border: selectedPlan === "monthly" ? '2px solid #CAFC80' : '2px solid transparent',
@@ -256,13 +257,13 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[#CAFC80] text-base">⭐</span>
+                <img src={starIcon} alt="" className="w-4 h-4" />
                 <span 
                   className="text-[#CAFC80]" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
-                    fontSize: '14px',
+                    fontSize: '13px',
                   }}
                 >
                   Pro monthly
@@ -274,7 +275,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '32px',
+                    fontSize: '28px',
                   }}
                 >
                   $7.99
@@ -284,7 +285,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '16px',
+                    fontSize: '14px',
                   }}
                 >
                   /month
@@ -296,7 +297,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
                   fontStyle: 'italic',
-                  fontSize: '12px',
+                  fontSize: '11px',
                 }}
               >
                 Perfect individual needs
@@ -306,7 +307,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             {/* Yearly Plan */}
             <button
               onClick={() => setSelectedPlan("yearly")}
-              className="flex-1 rounded-3xl p-5 transition-all"
+              className="flex-1 rounded-3xl p-4 transition-all"
               style={{
                 backgroundColor: '#2B2A2A',
                 border: selectedPlan === "yearly" ? '2px solid #CAFC80' : '2px solid transparent',
@@ -314,13 +315,13 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               }}
             >
               <div className="flex items-center gap-2 mb-2">
-                <span className="text-[#CAFC80] text-base">⭐</span>
+                <img src={starIcon} alt="" className="w-4 h-4" />
                 <span 
                   className="text-[#CAFC80]" 
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 700,
-                    fontSize: '14px',
+                    fontSize: '13px',
                   }}
                 >
                   Pro yearly
@@ -332,7 +333,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '32px',
+                    fontSize: '28px',
                   }}
                 >
                   $49
@@ -342,7 +343,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   style={{ 
                     fontFamily: 'Inter, sans-serif',
                     fontWeight: 900,
-                    fontSize: '16px',
+                    fontSize: '14px',
                   }}
                 >
                   /year
@@ -354,7 +355,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
                   fontFamily: 'Inter, sans-serif',
                   fontWeight: 500,
                   fontStyle: 'italic',
-                  fontSize: '12px',
+                  fontSize: '11px',
                 }}
               >
                 Most users choose this
@@ -365,25 +366,26 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           {/* Subscribe Button */}
           <Button
             onClick={handleSubscribe}
-            className="w-full max-w-md h-16 rounded-[28px] mb-6 mx-6 hover:opacity-90 transition-opacity"
+            className="w-full max-w-md h-14 rounded-[28px] mb-5 mx-6 hover:opacity-90 transition-opacity"
             style={{
               backgroundColor: '#CAFC80',
               color: '#000',
               fontFamily: 'Inter, sans-serif',
               fontWeight: 600,
-              fontSize: '17px',
+              fontSize: '16px',
             }}
           >
             Subscribe to Pro
           </Button>
 
           {/* Footer Text */}
-          <div className="w-full max-w-md px-8 mb-4">
+          <div className="w-full max-w-md px-8 mb-3">
             <p 
-              className="text-white/60 text-center text-xs leading-relaxed"
+              className="text-white/60 text-center leading-relaxed"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 300,
+                fontSize: '10px',
               }}
             >
               Payment will be charged to your iTunes Account at confirmation of purchase.
@@ -393,15 +395,16 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
           </div>
 
           {/* Footer Links */}
-          <div className="flex items-center justify-center gap-4 mb-8">
+          <div className="flex items-center justify-center gap-3 mb-6 flex-wrap">
             <a 
               href="https://bloomgen.app/policies" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-white text-sm"
+              className="text-white"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
+                fontSize: '12px',
               }}
             >
               Terms of Service
@@ -411,10 +414,11 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               href="https://bloomgen.app/policies" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-white text-sm"
+              className="text-white"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
+                fontSize: '12px',
               }}
             >
               Privacy Policy
@@ -422,10 +426,11 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             <span className="text-white/40">•</span>
             <button 
               onClick={handleRestore}
-              className="text-white text-sm"
+              className="text-white"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
                 fontWeight: 500,
+                fontSize: '12px',
               }}
             >
               Restore Purchases
