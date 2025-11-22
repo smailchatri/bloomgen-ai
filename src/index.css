@@ -18,8 +18,8 @@ All colors MUST be HSL.
     --popover: 155 20% 10%;
     --popover-foreground: 0 0% 98%;
 
-    /* Lime accent - primary brand color */
-    --primary: 75 100% 68%;
+    /* Lime accent - primary brand color #CAFC80 */
+    --primary: 75 95% 75%;
     --primary-foreground: 155 25% 8%;
 
     /* Dark green secondary */
@@ -29,7 +29,7 @@ All colors MUST be HSL.
     --muted: 155 15% 20%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 75 100% 68%;
+    --accent: 75 95% 75%;
     --accent-foreground: 155 25% 8%;
 
     --destructive: 0 84% 60%;
@@ -37,14 +37,15 @@ All colors MUST be HSL.
 
     --border: 155 15% 25%;
     --input: 155 15% 20%;
-    --ring: 75 100% 68%;
+    --ring: 75 95% 75%;
 
     --radius: 1rem;
 
-    /* Custom tokens for glossy effects */
-    --gradient-start: 155 25% 10%;
-    --gradient-end: 155 30% 6%;
-    --glow-primary: 75 100% 68%;
+    /* Custom tokens for glossy effects and animations */
+    --gradient-start: 155 35% 20%;
+    --gradient-mid: 75 45% 35%;
+    --gradient-end: 155 30% 15%;
+    --glow-primary: 75 95% 75%;
     --glass-bg: 155 20% 12%;
     --glass-border: 155 15% 30%;
   }
@@ -81,14 +82,37 @@ All colors MUST be HSL.
     box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3);
   }
 
-  /* Premium gradient background */
+  /* Premium animated gradient background */
   .gradient-bg {
-    background: linear-gradient(180deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+    background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)));
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 
   /* Smooth iOS-style transitions */
   .transition-smooth {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* iOS safe areas */
+  .pb-safe {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .pt-safe {
+    padding-top: max(1rem, env(safe-area-inset-top));
   }
 }
 
