@@ -15,15 +15,15 @@ export const BottomNav = () => {
       <div className="flex items-center justify-around h-[88px] max-w-md mx-auto px-6">
         <Link
           to="/library"
-          className="flex flex-col items-center gap-0.5 transition-all"
+          className="flex flex-col items-center gap-1 transition-all"
         >
           <img 
             src={currentPath === "/library" ? libraryGreen : libraryGray} 
             alt="Library" 
-            className="w-6 h-6 mb-0.5"
+            className="w-6 h-6"
           />
           <span 
-            className={`text-[11px] leading-tight ${
+            className={`text-[11px] ${
               currentPath === "/library" 
                 ? "font-bold text-[#CAFC80]" 
                 : "font-normal text-[#9C9C9C]"
@@ -36,15 +36,15 @@ export const BottomNav = () => {
 
         <Link
           to="/explore"
-          className="flex flex-col items-center gap-0.5 transition-all"
+          className="flex flex-col items-center gap-1 transition-all"
         >
           <img 
             src={currentPath === "/explore" ? bloomgenLogoGreen : bloomgenLogoGray} 
             alt="Explore" 
-            className="w-9 h-9 mb-0.5"
+            className="w-9 h-9"
           />
           <span 
-            className={`text-[11px] leading-tight ${
+            className={`text-[11px] ${
               currentPath === "/explore" 
                 ? "font-bold text-[#CAFC80]" 
                 : "font-normal text-[#9C9C9C]"
@@ -57,15 +57,15 @@ export const BottomNav = () => {
 
         <Link
           to="/profile"
-          className="flex flex-col items-center gap-0.5 transition-all"
+          className="flex flex-col items-center gap-1 transition-all"
         >
           <img 
             src={currentPath === "/profile" ? personalGreen : personalGray} 
             alt="Personal" 
-            className="w-6 h-6 mb-0.5"
+            className="w-6 h-6"
           />
           <span 
-            className={`text-[11px] leading-tight ${
+            className={`text-[11px] ${
               currentPath === "/profile" 
                 ? "font-bold text-[#CAFC80]" 
                 : "font-normal text-[#9C9C9C]"

@@ -38,22 +38,30 @@ const Explore = () => {
   const isSaved = savedPrompts.includes(currentPrompt.id);
 
   return (
-    <div className="h-screen w-screen overflow-y-auto overflow-x-hidden bg-black relative pb-20">
-      {/* Scrollable Content */}
-      <div className="min-h-screen">
-        {mockPrompts.map((prompt, index) => (
-          <div key={prompt.id} className="h-screen w-full relative">
-            <img
-              src={prompt.image_url}
-              alt={prompt.title}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
+    <div 
+      className="h-screen w-screen overflow-y-auto overflow-x-hidden bg-black relative"
+      style={{
+        scrollSnapType: 'y mandatory',
+        scrollBehavior: 'smooth'
+      }}
+    >
+      {/* Scrollable Content with Snap Points */}
+      {mockPrompts.map((prompt, index) => (
+        <div 
+          key={prompt.id} 
+          className="h-screen w-full relative"
+          style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
+        >
+          <img
+            src={prompt.image_url}
+            alt={prompt.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ))}
 
       {/* Fixed Bottom Buttons Container */}
-      <div className="fixed bottom-[88px] left-0 right-0 flex items-center justify-center gap-3 px-6 z-40">
+      <div className="fixed bottom-[104px] left-0 right-0 flex items-center justify-center gap-3 px-6 z-40">
         {/* Copy Prompt Button */}
         <button
           onClick={handleCopy}
