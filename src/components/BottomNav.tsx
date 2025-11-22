@@ -1,48 +1,80 @@
-import { Home, Bookmark, User } from "lucide-react";
-import { NavLink } from "./NavLink";
+import { useLocation, Link } from "react-router-dom";
+import libraryGray from "@/assets/library_gray.png";
+import libraryGreen from "@/assets/library_green.png";
+import bloomgenLogoGray from "@/assets/bloomgen_logo_gray.png";
+import bloomgenLogoGreen from "@/assets/bloomgen_logo_green.png";
+import personalGray from "@/assets/personal_gray.png";
+import personalGreen from "@/assets/personal_green.png";
 
 export const BottomNav = () => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 glass border-t border-border z-50 pb-safe">
-      <div className="flex items-center justify-around h-16 max-w-md mx-auto px-6">
-        <NavLink
-          to="/explore"
-          className="flex flex-col items-center gap-1 transition-smooth"
-          activeClassName="text-primary"
-        >
-          {({ isActive }) => (
-            <>
-              <Home className={`w-6 h-6 ${isActive ? "glow-primary" : ""}`} />
-              <span className="text-xs font-medium">Explore</span>
-            </>
-          )}
-        </NavLink>
-
-        <NavLink
+    <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-lg border-t border-white/10 z-50 pb-safe">
+      <div className="flex items-center justify-around h-20 max-w-md mx-auto px-6">
+        <Link
           to="/library"
-          className="flex flex-col items-center gap-1 transition-smooth"
-          activeClassName="text-primary"
+          className="flex flex-col items-center gap-1 transition-all"
         >
-          {({ isActive }) => (
-            <>
-              <Bookmark className={`w-6 h-6 ${isActive ? "glow-primary" : ""}`} />
-              <span className="text-xs font-medium">Library</span>
-            </>
-          )}
-        </NavLink>
+          <img 
+            src={currentPath === "/library" ? libraryGreen : libraryGray} 
+            alt="Library" 
+            className="w-6 h-6"
+          />
+          <span 
+            className={`text-xs ${
+              currentPath === "/library" 
+                ? "font-bold text-[#CAFC80]" 
+                : "font-normal text-[#B0B0B0]"
+            }`}
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            Library
+          </span>
+        </Link>
 
-        <NavLink
-          to="/profile"
-          className="flex flex-col items-center gap-1 transition-smooth"
-          activeClassName="text-primary"
+        <Link
+          to="/explore"
+          className="flex flex-col items-center gap-1 transition-all"
         >
-          {({ isActive }) => (
-            <>
-              <User className={`w-6 h-6 ${isActive ? "glow-primary" : ""}`} />
-              <span className="text-xs font-medium">Personal</span>
-            </>
-          )}
-        </NavLink>
+          <img 
+            src={currentPath === "/explore" ? bloomgenLogoGreen : bloomgenLogoGray} 
+            alt="Explore" 
+            className="w-10 h-10"
+          />
+          <span 
+            className={`text-xs ${
+              currentPath === "/explore" 
+                ? "font-bold text-[#CAFC80]" 
+                : "font-normal text-[#B0B0B0]"
+            }`}
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            Explore
+          </span>
+        </Link>
+
+        <Link
+          to="/profile"
+          className="flex flex-col items-center gap-1 transition-all"
+        >
+          <img 
+            src={currentPath === "/profile" ? personalGreen : personalGray} 
+            alt="Personal" 
+            className="w-6 h-6"
+          />
+          <span 
+            className={`text-xs ${
+              currentPath === "/profile" 
+                ? "font-bold text-[#CAFC80]" 
+                : "font-normal text-[#B0B0B0]"
+            }`}
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          >
+            Personal
+          </span>
+        </Link>
       </div>
     </nav>
   );
