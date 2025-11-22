@@ -63,10 +63,10 @@ const Library = () => {
             BLOOMGEN
           </span>
         </div>
-        <h1 className="text-white text-2xl tracking-wide mb-1 text-center" style={{ fontFamily: 'Inter', fontWeight: 900 }}>
+        <h1 className="text-white tracking-wide mb-1 text-center whitespace-nowrap" style={{ fontFamily: 'Inter', fontWeight: 900, fontSize: 'clamp(1.25rem, 5vw, 1.5rem)' }}>
           ALL YOUR SAVED PROMPTS
         </h1>
-        <h2 className="text-white text-2xl text-center" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic' }}>
+        <h2 className="text-white text-center whitespace-nowrap" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic', fontSize: 'clamp(1.25rem, 5vw, 1.5rem)' }}>
           READY TO COPY!
         </h2>
       </header>
