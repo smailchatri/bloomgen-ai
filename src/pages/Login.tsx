@@ -70,11 +70,11 @@ const Login = () => {
     <div className="min-h-screen bg-black flex flex-col items-center justify-center px-6 py-8">
       <div className="w-full max-w-md flex flex-col items-center">
         {/* Hero Image */}
-        <div className="mb-8 mt-8">
+        <div className="mb-6 mt-6">
           <img 
             src={loginHero} 
             alt="Creative examples" 
-            className="w-[280px] h-auto"
+            className="w-[340px] h-auto"
           />
         </div>
 
@@ -84,7 +84,7 @@ const Login = () => {
         </h1>
 
         {/* Subtitle */}
-        <p className="text-[#A1A1A1] text-center text-[15px] leading-relaxed mb-10 px-4 max-w-[340px]">
+        <p className="text-[#A1A1A1] text-center text-[15px] font-medium leading-relaxed mb-8 px-4 max-w-[340px]">
           Log in to access your saved prompts, custom styles, and next-level shots. Your inspiration is waiting.
         </p>
 
@@ -93,16 +93,16 @@ const Login = () => {
           <button
             onClick={handleAppleLogin}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[16px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <img src={appleIcon} alt="Apple" className="w-5 h-5 mr-3" />
+            <img src={appleIcon} alt="Apple" className="w-5 h-auto mr-3" />
             {isAuthenticating ? "Logging in..." : "Continue with Apple"}
           </button>
 
           <button
             onClick={handleGoogleLogin}
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[16px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full h-14 bg-[#1A1A1A] hover:bg-[#2A2A2A] rounded-[28px] flex items-center justify-center text-white font-semibold text-[17px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <img src={googleIcon} alt="Google" className="w-5 h-5 mr-3" />
             {isAuthenticating ? "Logging in..." : "Continue with Google"}
@@ -110,12 +110,12 @@ const Login = () => {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-10">
+        <div className="text-center mt-8">
           <button
             onClick={() => navigate("/auth/signup")}
             className="text-[#A1A1A1] text-[15px]"
           >
-            Don't have an account? <span className="text-[#CAFC80] font-semibold">Create an account</span>
+            Don't have an account? <span className="text-[#CAFC80] font-bold">Create an account</span>
           </button>
         </div>
       </div>
