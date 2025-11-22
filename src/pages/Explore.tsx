@@ -17,9 +17,15 @@ const Explore = () => {
   const currentPrompt = mockPrompts[currentPromptIndex];
 
   const handleSave = (id: string) => {
+    const isCurrentlySaved = savedPrompts.includes(id);
     setSavedPrompts(prev =>
       prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
     );
+    toast({
+      title: isCurrentlySaved ? "Prompt removed!" : "Prompt saved!",
+      description: isCurrentlySaved ? "Removed from library" : "Added to library",
+      duration: 2000,
+    });
   };
 
   const handleCopy = () => {
