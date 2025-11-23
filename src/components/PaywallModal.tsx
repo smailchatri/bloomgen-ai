@@ -43,19 +43,18 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
         {/* Background Image */}
         <div className="absolute inset-0 w-full h-full" style={{ backgroundColor: '#000' }}>
           <div 
-            className="absolute top-0 left-0 w-full"
+            className="absolute top-0 left-0 w-full h-full"
             style={{
               backgroundImage: `url(${paywallBg})`,
-              backgroundSize: 'auto',
+              backgroundSize: '100% auto',
               backgroundPosition: 'top center',
               backgroundRepeat: 'no-repeat',
-              height: '40vh',
             }}
           />
           <div 
             className="absolute inset-0 w-full h-full"
             style={{
-              background: 'linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%)',
+              background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,1) 70%)',
             }}
           />
         </div>
