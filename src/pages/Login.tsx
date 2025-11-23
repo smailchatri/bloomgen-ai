@@ -4,12 +4,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import loginHero from "@/assets/login_hero.png";
-import googleIcon from "@/assets/google_icon.webp";
-import appleIcon from "@/assets/apple_icon.png";
 
 const Login = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
@@ -18,41 +18,29 @@ const Login = () => {
     }
   }, [user, loading, navigate]);
 
-  const handleGoogleLogin = async () => {
-    try {
-      setIsAuthenticating(true);
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/explore`,
-        },
-      });
-      
-      if (error) {
-        toast.error(error.message);
-      }
-    } catch (error) {
-      toast.error("Failed to login with Google");
-    } finally {
-      setIsAuthenticating(false);
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
     }
-  };
 
-  const handleAppleLogin = async () => {
     try {
       setIsAuthenticating(true);
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'apple',
-        options: {
-          redirectTo: `${window.location.origin}/explore`,
-        },
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
       
       if (error) {
         toast.error(error.message);
+      } else {
+        toast.success("Logged in successfully!");
+        navigate("/explore");
       }
     } catch (error) {
-      toast.error("Failed to login with Apple");
+      toast.error("Failed to login");
     } finally {
       setIsAuthenticating(false);
     }
@@ -88,28 +76,35 @@ const Login = () => {
           Log in to access your saved prompts, custom styles, and next-level shots. Your inspiration is waiting.
         </p>
 
-        {/* Social Login Buttons */}
-        <div className="w-full space-y-3 px-6">
-          <button
-            onClick={handleAppleLogin}
-            disabled={isAuthenticating}
-            className="w-full h-14 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-[22px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
-            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
-          >
-            <img src={appleIcon} alt="Apple" className="w-[14px] h-[14px] mr-3 flex-shrink-0" />
-            <span className="whitespace-nowrap">{isAuthenticating ? "Logging in..." : "Continue with Apple"}</span>
-          </button>
+        {/* Email Login Form */}
+        <form onSubmit={handleEmailLogin} className="w-full space-y-3 px-6">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full h-14 bg-[#2A2A2A] rounded-[22px] px-6 text-white placeholder:text-[#A1A1A1] focus:outline-none focus:ring-2 focus:ring-[#CAFC80]"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          />
+          
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="w-full h-14 bg-[#2A2A2A] rounded-[22px] px-6 text-white placeholder:text-[#A1A1A1] focus:outline-none focus:ring-2 focus:ring-[#CAFC80]"
+            style={{ fontFamily: 'Inter, sans-serif' }}
+          />
 
           <button
-            onClick={handleGoogleLogin}
+            type="submit"
             disabled={isAuthenticating}
-            className="w-full h-14 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-[22px] flex items-center justify-center text-white font-normal text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed px-12 whitespace-nowrap"
-            style={{ fontFamily: 'Inter, sans-serif', fontWeight: 400 }}
+            className="w-full h-14 bg-[#CAFC80] hover:bg-[#B8E970] rounded-[22px] text-black font-bold text-[16px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ fontFamily: 'Inter, sans-serif' }}
           >
-            <img src={googleIcon} alt="Google" className="w-[14px] h-[14px] mr-3 flex-shrink-0" />
-            <span className="whitespace-nowrap">{isAuthenticating ? "Logging in..." : "Continue with Google"}</span>
+            {isAuthenticating ? "Logging in..." : "Login"}
           </button>
-        </div>
+        </form>
 
         {/* Footer */}
         <div className="text-center mt-8">
