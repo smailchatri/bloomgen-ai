@@ -33,7 +33,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
-        className="max-w-full w-full h-full p-0 border-0 rounded-none overflow-hidden fixed inset-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom-0 data-[state=closed]:slide-out-to-bottom-0 [&>button:last-child]:hidden"
+        className="max-w-full w-full h-full p-0 border-0 rounded-none overflow-hidden fixed inset-0 translate-x-0 translate-y-0 [&>button:last-child]:hidden"
         style={{
           background: '#000',
           height: '100dvh',
