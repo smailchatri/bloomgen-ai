@@ -128,7 +128,8 @@ const Explore = () => {
             alt=""
             className="w-full h-full object-cover"
             onError={(e) => {
-              console.error('Image failed to load:', prompt.image_url);
+              // Hide broken image immediately
+              e.currentTarget.style.display = 'none';
               setBrokenImages(prev => new Set([...prev, prompt.id]));
             }}
           />
