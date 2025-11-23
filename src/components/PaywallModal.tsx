@@ -72,7 +72,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
         </button>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center h-full overflow-hidden" style={{ 
+        <div className="relative z-10 flex flex-col items-center h-full overflow-y-auto" style={{ 
           paddingTop: 'max(3.5rem, env(safe-area-inset-top) + 2rem)',
           paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom) + 1rem)',
           paddingLeft: '1.5rem',
