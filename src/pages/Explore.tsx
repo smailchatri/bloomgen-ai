@@ -13,6 +13,7 @@ const Explore = () => {
   const [showPaywall, setShowPaywall] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [seenPrompts, setSeenPrompts] = useState<Set<string>>(new Set());
+  const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
@@ -25,11 +26,12 @@ const Explore = () => {
 
   const isPremium = premiumStatus?.isPremium || false;
 
-  // Create smart prompt list: show all prompts, exclude saved ones after full loop
+  // Create smart prompt list: show all prompts, exclude saved ones after full loop, and exclude broken images
   const savedPromptIds = new Set(savedPromptsList.map(p => p.id));
-  const availablePrompts = seenPrompts.size >= allPrompts.length
+  const availablePrompts = (seenPrompts.size >= allPrompts.length
     ? allPrompts.filter(p => !savedPromptIds.has(p.id))
-    : allPrompts;
+    : allPrompts
+  ).filter(p => !brokenImages.has(p.id));
 
   const currentPrompt = availablePrompts[currentIndex];
 
@@ -123,8 +125,12 @@ const Explore = () => {
         >
           <img
             src={prompt.image_url}
-            alt={prompt.title || 'Prompt image'}
+            alt=""
             className="w-full h-full object-cover"
+            onError={(e) => {
+              console.error('Image failed to load:', prompt.image_url);
+              setBrokenImages(prev => new Set([...prev, prompt.id]));
+            }}
           />
         </div>
       ))}
