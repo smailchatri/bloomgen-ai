@@ -2,6 +2,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import personalBg from "@/assets/personal_bg.png";
 import userProfile from "@/assets/user_profile.png";
 import helpIcon from "@/assets/help_icon.png";
@@ -28,10 +29,20 @@ const Profile = () => {
     return `${month} ${year}`;
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('mockAuthUser');
-    toast.success("Logged out successfully");
-    navigate("/auth/login");
+  const handleLogout = async () => {
+    try {
+      // Clear onboarding flag to show onboarding screens again
+      localStorage.removeItem('hasSeenOnboarding');
+      
+      // Sign out from Supabase
+      await supabase.auth.signOut();
+      
+      toast.success("Logged out successfully");
+      navigate("/onboarding/1");
+    } catch (error) {
+      toast.error("Failed to logout");
+      console.error("Logout error:", error);
+    }
   };
 
   return (
