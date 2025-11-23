@@ -28,12 +28,10 @@ const Explore = () => {
 
   const isPremium = premiumStatus?.isPremium || false;
 
-  // Create smart prompt list: show all prompts, exclude saved ones after full loop, and exclude broken images
+  // Create smart prompt list: always exclude saved prompts and broken images
   const savedPromptIds = new Set(savedPromptsList.map(p => p.id));
-  const availablePrompts = (seenPrompts.size >= allPrompts.length
-    ? allPrompts.filter(p => !savedPromptIds.has(p.id))
-    : allPrompts
-  ).filter(p => !brokenImages.has(p.id));
+  const availablePrompts = allPrompts
+    .filter(p => !savedPromptIds.has(p.id) && !brokenImages.has(p.id));
 
   const currentPrompt = availablePrompts[currentIndex];
 
@@ -44,7 +42,7 @@ const Explore = () => {
     }
   }, [currentPrompt, seenPrompts]);
 
-  // Handle scroll to update current index
+  // Handle scroll to update current index and implement infinite loop
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -56,6 +54,16 @@ const Explore = () => {
       
       if (newIndex !== currentIndex && newIndex < availablePrompts.length) {
         setCurrentIndex(newIndex);
+      }
+
+      // Infinite loop: when reaching the last prompt, smoothly go back to first
+      if (newIndex >= availablePrompts.length - 1) {
+        setTimeout(() => {
+          if (container.scrollTop >= (availablePrompts.length - 1) * windowHeight) {
+            container.scrollTo({ top: 0, behavior: 'smooth' });
+            setCurrentIndex(0);
+          }
+        }, 500);
       }
     };
 
