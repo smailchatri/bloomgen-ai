@@ -56,19 +56,21 @@ const Library = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0d1f0d] to-[#050f05] pb-24">
-      <header className="px-6 pt-12 pb-8">
+      <header className="pt-12 pb-8">
         <div className="flex items-center justify-center gap-3 mb-6">
           <img src={bloomgenLogo} alt="Bloomgen" className="h-12" />
           <span className="text-white text-3xl tracking-wide" style={{ fontFamily: 'Inter', fontWeight: 900 }}>
             BLOOMGEN
           </span>
         </div>
-        <h1 className="text-white tracking-wide mb-1 text-center whitespace-nowrap" style={{ fontFamily: 'Inter', fontWeight: 900, fontSize: 'clamp(1.25rem, 5vw, 1.5rem)' }}>
-          ALL YOUR SAVED PROMPTS
-        </h1>
-        <h2 className="text-white text-center whitespace-nowrap" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic', fontSize: 'clamp(1.25rem, 5vw, 1.5rem)' }}>
-          READY TO COPY!
-        </h2>
+        <div className="flex flex-col items-center px-4">
+          <h1 className="text-white tracking-wide mb-1 text-center" style={{ fontFamily: 'Inter', fontWeight: 900, fontSize: 'clamp(1.25rem, 5vw, 1.5rem)' }}>
+            ALL YOUR SAVED PROMPTS
+          </h1>
+          <h2 className="text-white text-center" style={{ fontFamily: 'Inter', fontWeight: 500, fontStyle: 'italic', fontSize: 'clamp(1.25rem, 5vw, 1.5rem)' }}>
+            READY TO COPY!
+          </h2>
+        </div>
       </header>
 
       <main className="max-w-md mx-auto px-6 pb-6">
