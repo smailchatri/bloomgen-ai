@@ -82,11 +82,10 @@ const Explore = () => {
   };
 
   const handleCopy = () => {
-    // TEMPORARY: Paywall disabled for testing
-    // if (!isPremium) {
-    //   setShowPaywall(true);
-    //   return;
-    // }
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
     
     navigator.clipboard.writeText(currentPrompt.prompt_text);
     setCopied(true);
