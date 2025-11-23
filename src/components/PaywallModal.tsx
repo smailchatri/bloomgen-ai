@@ -68,7 +68,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             right: '1.5rem',
           }}
         >
-          <img src={closeIcon} alt="Close" className="w-8 h-8" />
+          <img src={closeIcon} alt="Close" className="w-6 h-6" />
         </button>
 
         {/* Content */}
