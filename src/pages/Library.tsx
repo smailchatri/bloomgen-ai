@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { BottomNav } from "@/components/BottomNav";
+import { PaywallModal } from "@/components/PaywallModal";
 import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
 import { useSavedPrompts, useUnsavePrompt } from "@/hooks/usePrompts";
+import { usePremium } from "@/hooks/usePremium";
 import bloomgenLogo from "@/assets/bloomgen_logo.png";
 import bookmarkSaved from "@/assets/library_green.png";
 import sparkleIcon from "@/assets/sparkle_icon.png";
@@ -11,12 +13,16 @@ const Library = () => {
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
   const [copied, setCopied] = useState(false);
   const [currentDetailIndex, setCurrentDetailIndex] = useState(0);
+  const [showPaywall, setShowPaywall] = useState(false);
   const detailContainerRef = useRef<HTMLDivElement>(null);
   const initialScrollDone = useRef(false);
   const { toast } = useToast();
   
   const { data: savedPrompts = [], isLoading } = useSavedPrompts();
+  const { data: premiumStatus } = usePremium();
   const unsavePromptMutation = useUnsavePrompt();
+  
+  const isPremium = premiumStatus?.isPremium || false;
   
   // Create grid pattern: 3 columns, alternating colors
   // Pattern: Gray, Green, Gray / Green, Gray, Green / Gray, Green, Gray
@@ -27,6 +33,11 @@ const Library = () => {
   ];
 
   const handleCopy = () => {
+    if (!isPremium) {
+      setShowPaywall(true);
+      return;
+    }
+    
     const currentPrompt = savedPrompts[currentDetailIndex];
     if (currentPrompt) {
       navigator.clipboard.writeText(currentPrompt.prompt_text);
@@ -241,6 +252,9 @@ const Library = () => {
           <BottomNav />
         </div>
       )}
+      
+      {/* Paywall Modal */}
+      <PaywallModal open={showPaywall} onOpenChange={setShowPaywall} />
     </div>
   );
 };
