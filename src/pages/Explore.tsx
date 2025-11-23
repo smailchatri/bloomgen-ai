@@ -7,6 +7,7 @@ import { usePremium } from "@/hooks/usePremium";
 import bookmarkUnsaved from "@/assets/bookmark_unsaved.png";
 import bookmarkSaved from "@/assets/library_green.png";
 import sparkleIcon from "@/assets/sparkle_icon.png";
+import { Loader2 } from "lucide-react";
 
 const Explore = () => {
   const [copied, setCopied] = useState(false);
@@ -14,6 +15,7 @@ const Explore = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [seenPrompts, setSeenPrompts] = useState<Set<string>>(new Set());
   const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
+  const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
@@ -117,24 +119,43 @@ const Explore = () => {
       }}
     >
       {/* Scrollable Content with Snap Points */}
-      {availablePrompts.map((prompt, index) => (
-        <div 
-          key={`${prompt.id}-${index}`}
-          className="h-screen w-full relative"
-          style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
-        >
-          <img
-            src={prompt.image_url}
-            alt=""
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              // Hide broken image immediately
-              e.currentTarget.style.display = 'none';
-              setBrokenImages(prev => new Set([...prev, prompt.id]));
-            }}
-          />
-        </div>
-      ))}
+      {availablePrompts.map((prompt, index) => {
+        const isLoaded = loadedImages.has(prompt.id);
+        const isBroken = brokenImages.has(prompt.id);
+        
+        return (
+          <div 
+            key={`${prompt.id}-${index}`}
+            className="h-screen w-full relative"
+            style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
+          >
+            {!isLoaded && !isBroken && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black">
+                <Loader2 className="w-8 h-8 animate-spin text-white/50" />
+              </div>
+            )}
+            {!isBroken && (
+              <img
+                src={prompt.image_url}
+                alt={prompt.title || ""}
+                className="w-full h-full object-cover"
+                style={{ display: isLoaded ? 'block' : 'none' }}
+                onLoad={() => {
+                  setLoadedImages(prev => new Set([...prev, prompt.id]));
+                }}
+                onError={() => {
+                  setBrokenImages(prev => new Set([...prev, prompt.id]));
+                }}
+              />
+            )}
+            {isBroken && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black">
+                <p className="text-white/50 text-sm">Image unavailable</p>
+              </div>
+            )}
+          </div>
+        );
+      })}
 
       {/* Fixed Bottom Buttons Container */}
       <div 
