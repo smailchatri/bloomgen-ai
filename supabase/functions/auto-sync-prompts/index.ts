@@ -34,7 +34,13 @@ Deno.serve(async (req) => {
       const [image_url, prompt_text] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
       
       if (prompt_text && image_url) {
-        prompts.push({ prompt_text, image_url });
+        // Fix imgur URLs - convert https://imgur.com/ID to https://i.imgur.com/ID.jpg
+        let fixedImageUrl = image_url;
+        if (image_url.includes('imgur.com/') && !image_url.includes('i.imgur.com')) {
+          const imgurId = image_url.split('imgur.com/')[1].split('.')[0];
+          fixedImageUrl = `https://i.imgur.com/${imgurId}.jpg`;
+        }
+        prompts.push({ prompt_text, image_url: fixedImageUrl });
       }
     }
 
