@@ -1,1 +1,4 @@
 project_id = "hvolqmmkmnpiiiagpfdr"
+
+[functions.auto-sync-prompts]
+verify_jwt = false
