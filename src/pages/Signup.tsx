@@ -7,9 +7,6 @@ import signupHero from "@/assets/signup_hero.png";
 import googleIcon from "@/assets/google_icon.webp";
 import appleIcon from "@/assets/apple_icon.png";
 
-// Development bypass flag
-const DEV_BYPASS = true;
-
 const Signup = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
@@ -22,19 +19,6 @@ const Signup = () => {
   }, [user, loading, navigate]);
 
   const handleGoogleSignup = async () => {
-    // Development bypass
-    if (DEV_BYPASS) {
-      const mockUser = {
-        id: "dev-user-google",
-        email: "dev@mock.com",
-        user_metadata: { name: "Developer User" },
-      };
-      localStorage.setItem('hasSeenOnboarding', 'true');
-      localStorage.setItem('mockAuthUser', JSON.stringify(mockUser));
-      navigate('/explore');
-      return;
-    }
-
     try {
       setIsAuthenticating(true);
       const { error } = await supabase.auth.signInWithOAuth({
@@ -55,19 +39,6 @@ const Signup = () => {
   };
 
   const handleAppleSignup = async () => {
-    // Development bypass
-    if (DEV_BYPASS) {
-      const mockUser = {
-        id: "dev-user-apple",
-        email: "dev@mock.com",
-        user_metadata: { name: "Developer User" },
-      };
-      localStorage.setItem('hasSeenOnboarding', 'true');
-      localStorage.setItem('mockAuthUser', JSON.stringify(mockUser));
-      navigate('/explore');
-      return;
-    }
-
     try {
       setIsAuthenticating(true);
       const { error } = await supabase.auth.signInWithOAuth({

@@ -7,46 +7,63 @@ interface AuthContextType {
   session: Session | null;
   loading: boolean;
   hasSeenOnboarding: boolean;
+  isPremium: boolean;
   markOnboardingComplete: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const ONBOARDING_KEY = 'hasSeenOnboarding';
-const MOCK_USER_KEY = 'mockAuthUser';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(() => {
     return localStorage.getItem(ONBOARDING_KEY) === 'true';
   });
 
-  useEffect(() => {
-    // Check for mock user first (development bypass)
-    const mockUserStr = localStorage.getItem(MOCK_USER_KEY);
-    if (mockUserStr) {
-      try {
-        const mockUser = JSON.parse(mockUserStr);
-        setUser(mockUser as User);
-        setHasSeenOnboarding(true);
-        setLoading(false);
-        return;
-      } catch (e) {
-        localStorage.removeItem(MOCK_USER_KEY);
-      }
+  // Fetch user's subscription status from database
+  const fetchSubscriptionStatus = async (userId: string) => {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('subscription_status, subscription_expires_at')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error fetching subscription status:', error);
+      return;
     }
 
+    if (data) {
+      // Check if subscription is premium and not expired
+      const isActive = data.subscription_status === 'premium' && 
+        (!data.subscription_expires_at || new Date(data.subscription_expires_at) > new Date());
+      setIsPremium(isActive);
+    }
+  };
+
+  useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
-        // When user logs in/signs up, mark onboarding as complete
+        // When user logs in/signs up, mark onboarding as complete and fetch subscription
         if (event === 'SIGNED_IN' && session?.user) {
           markOnboardingComplete();
+          // Defer subscription fetch to avoid blocking auth state change
+          setTimeout(() => {
+            fetchSubscriptionStatus(session.user.id);
+          }, 0);
+        }
+        
+        // Clear premium status on logout
+        if (event === 'SIGNED_OUT') {
+          setIsPremium(false);
         }
       }
     );
@@ -55,6 +72,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+      
+      // Fetch subscription status if user exists
+      if (session?.user) {
+        fetchSubscriptionStatus(session.user.id);
+      }
+      
       setLoading(false);
     });
 
@@ -71,7 +94,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user, 
       session, 
       loading, 
-      hasSeenOnboarding, 
+      hasSeenOnboarding,
+      isPremium,
       markOnboardingComplete 
     }}>
       {children}
