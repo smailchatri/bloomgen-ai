@@ -1,5 +1,5 @@
 import { BottomNav } from "@/components/BottomNav";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,38 +83,32 @@ const Profile = () => {
 
           {/* Settings Rows */}
           <div className="space-y-3">
-            <a
-              href="https://www.bloomgen.app/support"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/support"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={helpIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Get Help</span>
-            </a>
+            </Link>
 
-            <a
-              href="https://www.bloomgen.app/policies"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/support"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={guidelinesIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Community Guidelines</span>
-            </a>
+            </Link>
 
-            <a
-              href="https://www.bloomgen.app/support"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/support"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={faqIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>FAQ</span>
-            </a>
+            </Link>
 
             <a
               href="mailto:support@bloomgen.app?subject=Delete Account Request&body=I want to delete my account."
@@ -125,40 +119,34 @@ const Profile = () => {
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Delete Account</span>
             </a>
 
-            <a
-              href="https://www.bloomgen.app/policies"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/policies"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Manage Subscription</span>
-            </a>
+            </Link>
 
-            <a
-              href="https://www.bloomgen.app/policies"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/policies"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={privacyIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Privacy Policy</span>
-            </a>
+            </Link>
           </div>
 
           {/* Terms of Service */}
-          <a
-            href="https://www.bloomgen.app/policies"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/policies"
             className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70 mt-6"
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             <img src={termsIcon} alt="" className="w-6 h-6" />
             <span className="text-white text-base" style={{ fontWeight: 600 }}>Terms of Service</span>
-          </a>
+          </Link>
 
           {/* Logout */}
           <button

@@ -14,6 +14,8 @@ import Login from "./pages/Login";
 import Explore from "./pages/Explore";
 import Library from "./pages/Library";
 import Profile from "./pages/Profile";
+import Support from "./pages/Support";
+import Policies from "./pages/Policies";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,6 +61,8 @@ const App = () => (
                 <Profile />
               </ProtectedRoute>
             } />
+            <Route path="/support" element={<Support />} />
+            <Route path="/policies" element={<Policies />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
