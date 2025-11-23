@@ -9,10 +9,10 @@ import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Library = () => {
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const [currentDetailIndex, setCurrentDetailIndex] = useState(0);
   const detailContainerRef = useRef<HTMLDivElement>(null);
+  const initialScrollDone = useRef(false);
   const { toast } = useToast();
   
   const { data: savedPrompts = [], isLoading } = useSavedPrompts();
@@ -60,40 +60,39 @@ const Library = () => {
 
   const handleItemClick = (prompt: Prompt, index: number) => {
     setSelectedPrompt(prompt);
-    setSelectedIndex(index);
     setCurrentDetailIndex(index);
+    initialScrollDone.current = false;
+    
+    // Scroll to the selected index after a brief delay
+    setTimeout(() => {
+      if (detailContainerRef.current) {
+        const windowHeight = window.innerHeight;
+        detailContainerRef.current.scrollTop = index * windowHeight;
+        initialScrollDone.current = true;
+      }
+    }, 100);
   };
 
-  // Handle scroll in detail view
+  // Handle scroll in detail view - simplified
   useEffect(() => {
     const container = detailContainerRef.current;
-    if (!container || !selectedPrompt) return;
+    if (!container) return;
 
     const handleScroll = () => {
+      if (!initialScrollDone.current) return;
+      
       const scrollTop = container.scrollTop;
       const windowHeight = window.innerHeight;
       const newIndex = Math.round(scrollTop / windowHeight);
       
-      if (newIndex >= 0 && newIndex < savedPrompts.length && newIndex !== currentDetailIndex) {
+      if (newIndex >= 0 && newIndex < savedPrompts.length) {
         setCurrentDetailIndex(newIndex);
       }
     };
 
     container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [currentDetailIndex, savedPrompts.length]);
-
-  // Scroll to selected prompt on open - only once
-  useEffect(() => {
-    if (selectedPrompt && detailContainerRef.current && selectedIndex >= 0) {
-      const windowHeight = window.innerHeight;
-      setTimeout(() => {
-        if (detailContainerRef.current) {
-          detailContainerRef.current.scrollTop = selectedIndex * windowHeight;
-        }
-      }, 50);
-    }
-  }, [selectedIndex]);
+  }, [savedPrompts.length]);
 
   if (isLoading) {
     return (
