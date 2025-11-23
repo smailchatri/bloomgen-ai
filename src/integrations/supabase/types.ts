@@ -43,28 +43,28 @@ export type Database = {
       }
       prompts: {
         Row: {
-          category: string
+          category: string | null
           created_at: string
           id: string
           image_url: string
           prompt_text: string
-          title: string
+          title: string | null
         }
         Insert: {
-          category: string
+          category?: string | null
           created_at?: string
           id?: string
           image_url: string
           prompt_text: string
-          title: string
+          title?: string | null
         }
         Update: {
-          category?: string
+          category?: string | null
           created_at?: string
           id?: string
           image_url?: string
           prompt_text?: string
-          title?: string
+          title?: string | null
         }
         Relationships: []
       }

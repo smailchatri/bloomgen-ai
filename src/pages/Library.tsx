@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
-import { mockPrompts } from "@/data/mockPrompts";
 import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
+import { useSavedPrompts, useUnsavePrompt } from "@/hooks/usePrompts";
 import bloomgenLogo from "@/assets/bloomgen_logo.png";
 import bookmarkSaved from "@/assets/library_green.png";
 import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Library = () => {
-  const [savedPrompts, setSavedPrompts] = useState<string[]>([]); // Start with empty library
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
-
-  const savedItems = mockPrompts.filter(p => savedPrompts.includes(p.id));
+  
+  const { data: savedPrompts = [], isLoading } = useSavedPrompts();
+  const unsavePromptMutation = useUnsavePrompt();
   
   // Create grid pattern: 3 columns, alternating colors
   // Pattern: Gray, Green, Gray / Green, Gray, Green / Gray, Green, Gray
@@ -38,14 +38,9 @@ const Library = () => {
     }
   };
 
-  const handleUnsave = () => {
+  const handleUnsave = async () => {
     if (selectedPrompt) {
-      setSavedPrompts(prev => prev.filter(id => id !== selectedPrompt.id));
-      toast({
-        title: "Prompt removed!",
-        description: "Removed from library",
-        duration: 2000,
-      });
+      await unsavePromptMutation.mutateAsync(selectedPrompt.id);
       setSelectedPrompt(null);
     }
   };
@@ -53,6 +48,14 @@ const Library = () => {
   const handleItemClick = (prompt: Prompt) => {
     setSelectedPrompt(prompt);
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-[#0d1f0d] to-[#050f05] flex items-center justify-center">
+        <p className="text-white">Loading library...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0d1f0d] to-[#050f05] pb-24">
@@ -74,35 +77,42 @@ const Library = () => {
       </header>
 
       <main className="max-w-md mx-auto px-6 pb-6">
-        <div className="grid grid-cols-3 gap-3">
-          {savedItems.map((prompt, index) => (
-            <button
-              key={prompt.id}
-              onClick={() => handleItemClick(prompt)}
-              className="rounded-3xl overflow-hidden aspect-[3/4] transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <img
-                src={prompt.image_url}
-                alt={prompt.title}
-                className="w-full h-full object-cover"
-              />
-            </button>
-          ))}
-          
-          {Array.from({ length: Math.max(0, 9 - savedItems.length) }).map((_, i) => {
-            const index = savedItems.length + i;
-            const isGreen = gridPattern[index % 9];
-            return (
-              <div
-                key={`placeholder-${i}`}
-                className="rounded-3xl aspect-[3/4]"
-                style={{ 
-                  backgroundColor: isGreen ? '#CAFC80' : '#D9D9D9'
-                }}
-              />
-            );
-          })}
-        </div>
+        {savedPrompts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 text-white/60 text-center">
+            <p className="text-lg mb-2">No saved prompts yet</p>
+            <p className="text-sm">Save prompts from Explore to see them here</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-3">
+            {savedPrompts.map((prompt, index) => (
+              <button
+                key={prompt.id}
+                onClick={() => handleItemClick(prompt)}
+                className="rounded-3xl overflow-hidden aspect-[3/4] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <img
+                  src={prompt.image_url}
+                  alt={prompt.title || 'Saved prompt'}
+                  className="w-full h-full object-cover"
+                />
+              </button>
+            ))}
+            
+            {Array.from({ length: Math.max(0, 9 - savedPrompts.length) }).map((_, i) => {
+              const index = savedPrompts.length + i;
+              const isGreen = gridPattern[index % 9];
+              return (
+                <div
+                  key={`placeholder-${i}`}
+                  className="rounded-3xl aspect-[3/4]"
+                  style={{ 
+                    backgroundColor: isGreen ? '#CAFC80' : '#D9D9D9'
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
       </main>
 
       <BottomNav />
@@ -119,7 +129,7 @@ const Library = () => {
           
           <img
             src={selectedPrompt.image_url}
-            alt={selectedPrompt.title}
+            alt={selectedPrompt.title || 'Prompt image'}
             className="w-full h-full object-cover"
           />
 

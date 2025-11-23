@@ -1,43 +1,80 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { PaywallModal } from "@/components/PaywallModal";
-import { mockPrompts } from "@/data/mockPrompts";
-import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
+import { usePrompts, useSavePrompt, useUnsavePrompt, useSavedPrompts } from "@/hooks/usePrompts";
+import { usePremium } from "@/hooks/usePremium";
 import bookmarkUnsaved from "@/assets/bookmark_unsaved.png";
 import bookmarkSaved from "@/assets/library_green.png";
 import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Explore = () => {
-  const [savedPrompts, setSavedPrompts] = useState<string[]>([]);
-  const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [seenPrompts, setSeenPrompts] = useState<Set<string>>(new Set());
+  const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const isPro = false; // Set to false to show paywall for non-Pro users
+  
+  // Fetch data
+  const { data: allPrompts = [], isLoading: promptsLoading } = usePrompts();
+  const { data: savedPromptsList = [] } = useSavedPrompts();
+  const { data: premiumStatus } = usePremium();
+  const savePromptMutation = useSavePrompt();
+  const unsavePromptMutation = useUnsavePrompt();
 
-  const currentPrompt = mockPrompts[currentPromptIndex];
+  const isPremium = premiumStatus?.isPremium || false;
 
-  const handleSave = (id: string) => {
-    const isCurrentlySaved = savedPrompts.includes(id);
-    setSavedPrompts(prev =>
-      prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id]
-    );
-    toast({
-      title: isCurrentlySaved ? "Prompt removed!" : "Prompt saved!",
-      description: isCurrentlySaved ? "Removed from library" : "Added to library",
-      duration: 2000,
-    });
+  // Create smart prompt list: show all prompts, exclude saved ones after full loop
+  const savedPromptIds = new Set(savedPromptsList.map(p => p.id));
+  const availablePrompts = seenPrompts.size >= allPrompts.length
+    ? allPrompts.filter(p => !savedPromptIds.has(p.id))
+    : allPrompts;
+
+  const currentPrompt = availablePrompts[currentIndex];
+
+  // Track seen prompts on scroll
+  useEffect(() => {
+    if (currentPrompt && !seenPrompts.has(currentPrompt.id)) {
+      setSeenPrompts(prev => new Set([...prev, currentPrompt.id]));
+    }
+  }, [currentPrompt, seenPrompts]);
+
+  // Handle scroll to update current index
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+      const windowHeight = window.innerHeight;
+      const newIndex = Math.round(scrollTop / windowHeight);
+      
+      if (newIndex !== currentIndex && newIndex < availablePrompts.length) {
+        setCurrentIndex(newIndex);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [currentIndex, availablePrompts.length]);
+
+  const handleSave = async (id: string) => {
+    const isSaved = savedPromptIds.has(id);
+    
+    if (isSaved) {
+      await unsavePromptMutation.mutateAsync(id);
+    } else {
+      await savePromptMutation.mutateAsync(id);
+    }
   };
 
   const handleCopy = () => {
-    // Check if user has Pro subscription
-    if (!isPro) {
+    if (!isPremium) {
       setShowPaywall(true);
       return;
     }
     
-    // Only copy if user is Pro
     navigator.clipboard.writeText(currentPrompt.prompt_text);
     setCopied(true);
     setTimeout(() => {
@@ -50,10 +87,27 @@ const Explore = () => {
     });
   };
 
-  const isSaved = savedPrompts.includes(currentPrompt.id);
+  if (promptsLoading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-black">
+        <p className="text-white">Loading prompts...</p>
+      </div>
+    );
+  }
+
+  if (!availablePrompts.length) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-black">
+        <p className="text-white">No prompts available. Add some via Google Sheets sync!</p>
+      </div>
+    );
+  }
+
+  const isSaved = currentPrompt && savedPromptIds.has(currentPrompt.id);
 
   return (
     <div 
+      ref={containerRef}
       className="h-screen w-screen overflow-y-auto overflow-x-hidden bg-black relative"
       style={{
         scrollSnapType: 'y mandatory',
@@ -61,15 +115,15 @@ const Explore = () => {
       }}
     >
       {/* Scrollable Content with Snap Points */}
-      {mockPrompts.map((prompt, index) => (
+      {availablePrompts.map((prompt, index) => (
         <div 
-          key={prompt.id} 
+          key={`${prompt.id}-${index}`}
           className="h-screen w-full relative"
           style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
         >
           <img
             src={prompt.image_url}
-            alt={prompt.title}
+            alt={prompt.title || 'Prompt image'}
             className="w-full h-full object-cover"
           />
         </div>
