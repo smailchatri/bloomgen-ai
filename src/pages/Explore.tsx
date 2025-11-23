@@ -42,28 +42,28 @@ const Explore = () => {
     }
   }, [currentPrompt, seenPrompts]);
 
-  // Handle scroll to update current index and implement infinite loop
+  // Handle scroll to update current index with seamless infinite loop
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || availablePrompts.length === 0) return;
 
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
       const windowHeight = window.innerHeight;
-      const newIndex = Math.round(scrollTop / windowHeight);
+      const totalPrompts = availablePrompts.length;
       
-      if (newIndex !== currentIndex && newIndex < availablePrompts.length) {
-        setCurrentIndex(newIndex);
+      // Calculate actual index in the original array
+      const scrollIndex = Math.round(scrollTop / windowHeight);
+      const actualIndex = scrollIndex % totalPrompts;
+      
+      if (actualIndex !== currentIndex) {
+        setCurrentIndex(actualIndex);
       }
 
-      // Infinite loop: when reaching the last prompt, smoothly go back to first
-      if (newIndex >= availablePrompts.length - 1) {
-        setTimeout(() => {
-          if (container.scrollTop >= (availablePrompts.length - 1) * windowHeight) {
-            container.scrollTo({ top: 0, behavior: 'smooth' });
-            setCurrentIndex(0);
-          }
-        }, 500);
+      // Reset scroll position when reaching the end of second repetition
+      // This creates seamless infinite scroll
+      if (scrollIndex >= totalPrompts * 2) {
+        container.scrollTop = totalPrompts * windowHeight;
       }
     };
 
@@ -126,8 +126,8 @@ const Explore = () => {
         scrollBehavior: 'smooth'
       }}
     >
-      {/* Scrollable Content with Snap Points */}
-      {availablePrompts.map((prompt, index) => {
+      {/* Scrollable Content with Snap Points - Render prompts 3 times for seamless infinite scroll */}
+      {[...availablePrompts, ...availablePrompts, ...availablePrompts].map((prompt, index) => {
         const isLoaded = loadedImages.has(prompt.id);
         const isBroken = brokenImages.has(prompt.id);
         
