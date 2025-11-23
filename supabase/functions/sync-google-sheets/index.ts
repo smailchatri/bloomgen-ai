@@ -35,8 +35,8 @@ Deno.serve(async (req) => {
       const line = lines[i].trim();
       if (!line) continue;
       
-      // Simple CSV parsing (handles basic cases)
-      const [prompt_text, image_url] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      // Simple CSV parsing - image_url first, then prompt_text (matches Google Sheet format)
+      const [image_url, prompt_text] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
       
       if (prompt_text && image_url) {
         prompts.push({ prompt_text, image_url });
