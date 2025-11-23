@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent } from "./ui/dialog";
 import { Button } from "./ui/button";
-import paywallBg from "@/assets/paywall_bg.png";
+import paywallBg from "@/assets/paywall_bg_new.png";
 import starShield from "@/assets/star_shield.png";
 import closeIcon from "@/assets/close_icon.png";
 import sparkleBenefit from "@/assets/sparkle_benefit.png";
@@ -46,10 +46,10 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
             className="absolute top-0 left-0 w-full"
             style={{
               backgroundImage: `url(${paywallBg})`,
-              backgroundSize: '100% auto',
+              backgroundSize: 'auto',
               backgroundPosition: 'top center',
               backgroundRepeat: 'no-repeat',
-              height: '50vh',
+              height: '40vh',
             }}
           />
           <div 
