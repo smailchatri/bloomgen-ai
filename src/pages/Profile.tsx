@@ -84,7 +84,7 @@ const Profile = () => {
           {/* Settings Rows */}
           <div className="space-y-3">
             <a
-              href="https://bloomgen.app/support"
+              href="https://www.bloomgen.app/support"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
@@ -95,7 +95,7 @@ const Profile = () => {
             </a>
 
             <a
-              href="https://bloomgen.app/policies"
+              href="https://www.bloomgen.app/policies"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
@@ -106,7 +106,7 @@ const Profile = () => {
             </a>
 
             <a
-              href="https://bloomgen.app/support"
+              href="https://www.bloomgen.app/support"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
@@ -126,7 +126,7 @@ const Profile = () => {
             </a>
 
             <a
-              href="https://bloomgen.app/policies"
+              href="https://www.bloomgen.app/policies"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
@@ -137,7 +137,7 @@ const Profile = () => {
             </a>
 
             <a
-              href="https://bloomgen.app/policies"
+              href="https://www.bloomgen.app/policies"
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
@@ -150,7 +150,7 @@ const Profile = () => {
 
           {/* Terms of Service */}
           <a
-            href="https://bloomgen.app/policies"
+            href="https://www.bloomgen.app/policies"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70 mt-6"
