@@ -78,22 +78,16 @@ const Library = () => {
 
       <main className="max-w-md mx-auto px-6 pb-6">
         {savedPrompts.length === 0 ? (
-          <div className="relative">
-            <div className="grid grid-cols-3 gap-3">
-              {gridPattern.map((isGreen, index) => (
-                <div
-                  key={`empty-placeholder-${index}`}
-                  className="rounded-3xl aspect-[3/4]"
-                  style={{ 
-                    backgroundColor: isGreen ? '#CAFC80' : '#D9D9D9'
-                  }}
-                />
-              ))}
-            </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-white/60 text-center pointer-events-none">
-              <p className="text-lg mb-2">No saved prompts yet</p>
-              <p className="text-sm">Save prompts from Explore to see them here</p>
-            </div>
+          <div className="grid grid-cols-3 gap-3">
+            {gridPattern.map((isGreen, index) => (
+              <div
+                key={`empty-placeholder-${index}`}
+                className="rounded-3xl aspect-[3/4]"
+                style={{ 
+                  backgroundColor: isGreen ? '#CAFC80' : '#D9D9D9'
+                }}
+              />
+            ))}
           </div>
         ) : (
           <div className="grid grid-cols-3 gap-3">
