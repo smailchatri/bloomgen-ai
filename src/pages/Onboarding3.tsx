@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import bloomgenLogo from "@/assets/bloomgen_logo.png";
 import onboardingImage from "@/assets/onboarding_3.png";
-import starIcon from "@/assets/star_icon.png";
+import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Onboarding3 = () => {
   const navigate = useNavigate();
@@ -51,10 +51,11 @@ const Onboarding3 = () => {
         {/* Button */}
         <Button
           onClick={() => navigate("/auth/signup")}
-          className="w-full h-14 rounded-[20px] text-[17px] font-bold shadow-lg flex items-center justify-center gap-2 bg-primary text-black hover:bg-primary/90"
+          className="w-full h-14 rounded-[20px] text-[17px] shadow-lg flex items-center justify-center gap-2 bg-primary text-black hover:bg-primary/90"
+          style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}
         >
           Start the Magic
-          <img src={starIcon} alt="✨" className="w-5 h-5" />
+          <img src={sparkleIcon} alt="✨" className="w-5 h-5" />
         </Button>
       </div>
     </div>
