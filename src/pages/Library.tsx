@@ -49,6 +49,11 @@ const Library = () => {
       // If this was the last prompt, close the detail view
       if (savedPrompts.length <= 1) {
         setSelectedPrompt(null);
+      } else {
+        // Adjust index if we deleted the last item
+        if (currentDetailIndex >= savedPrompts.length - 1) {
+          setCurrentDetailIndex(Math.max(0, savedPrompts.length - 2));
+        }
       }
     }
   };
@@ -69,23 +74,26 @@ const Library = () => {
       const windowHeight = window.innerHeight;
       const newIndex = Math.round(scrollTop / windowHeight);
       
-      if (newIndex !== currentDetailIndex && newIndex < savedPrompts.length) {
+      if (newIndex >= 0 && newIndex < savedPrompts.length && newIndex !== currentDetailIndex) {
         setCurrentDetailIndex(newIndex);
-        setSelectedPrompt(savedPrompts[newIndex]);
       }
     };
 
-    container.addEventListener('scroll', handleScroll);
+    container.addEventListener('scroll', handleScroll, { passive: true });
     return () => container.removeEventListener('scroll', handleScroll);
-  }, [currentDetailIndex, savedPrompts, selectedPrompt]);
+  }, [currentDetailIndex, savedPrompts.length]);
 
-  // Scroll to selected prompt on open
+  // Scroll to selected prompt on open - only once
   useEffect(() => {
-    if (selectedPrompt && detailContainerRef.current) {
+    if (selectedPrompt && detailContainerRef.current && selectedIndex >= 0) {
       const windowHeight = window.innerHeight;
-      detailContainerRef.current.scrollTop = selectedIndex * windowHeight;
+      setTimeout(() => {
+        if (detailContainerRef.current) {
+          detailContainerRef.current.scrollTop = selectedIndex * windowHeight;
+        }
+      }, 50);
     }
-  }, [selectedPrompt, selectedIndex]);
+  }, [selectedIndex]);
 
   if (isLoading) {
     return (
