@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { Prompt } from "@/types/prompt";
 import { useToast } from "@/hooks/use-toast";
@@ -9,7 +9,10 @@ import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Library = () => {
   const [selectedPrompt, setSelectedPrompt] = useState<Prompt | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [currentDetailIndex, setCurrentDetailIndex] = useState(0);
+  const detailContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
   const { data: savedPrompts = [], isLoading } = useSavedPrompts();
@@ -24,8 +27,9 @@ const Library = () => {
   ];
 
   const handleCopy = () => {
-    if (selectedPrompt) {
-      navigator.clipboard.writeText(selectedPrompt.prompt_text);
+    const currentPrompt = savedPrompts[currentDetailIndex];
+    if (currentPrompt) {
+      navigator.clipboard.writeText(currentPrompt.prompt_text);
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
@@ -39,15 +43,49 @@ const Library = () => {
   };
 
   const handleUnsave = async () => {
-    if (selectedPrompt) {
-      await unsavePromptMutation.mutateAsync(selectedPrompt.id);
-      setSelectedPrompt(null);
+    const currentPrompt = savedPrompts[currentDetailIndex];
+    if (currentPrompt) {
+      await unsavePromptMutation.mutateAsync(currentPrompt.id);
+      // If this was the last prompt, close the detail view
+      if (savedPrompts.length <= 1) {
+        setSelectedPrompt(null);
+      }
     }
   };
 
-  const handleItemClick = (prompt: Prompt) => {
+  const handleItemClick = (prompt: Prompt, index: number) => {
     setSelectedPrompt(prompt);
+    setSelectedIndex(index);
+    setCurrentDetailIndex(index);
   };
+
+  // Handle scroll in detail view
+  useEffect(() => {
+    const container = detailContainerRef.current;
+    if (!container || !selectedPrompt) return;
+
+    const handleScroll = () => {
+      const scrollTop = container.scrollTop;
+      const windowHeight = window.innerHeight;
+      const newIndex = Math.round(scrollTop / windowHeight);
+      
+      if (newIndex !== currentDetailIndex && newIndex < savedPrompts.length) {
+        setCurrentDetailIndex(newIndex);
+        setSelectedPrompt(savedPrompts[newIndex]);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [currentDetailIndex, savedPrompts, selectedPrompt]);
+
+  // Scroll to selected prompt on open
+  useEffect(() => {
+    if (selectedPrompt && detailContainerRef.current) {
+      const windowHeight = window.innerHeight;
+      detailContainerRef.current.scrollTop = selectedIndex * windowHeight;
+    }
+  }, [selectedPrompt, selectedIndex]);
 
   if (isLoading) {
     return (
@@ -94,7 +132,7 @@ const Library = () => {
             {savedPrompts.map((prompt, index) => (
               <button
                 key={prompt.id}
-                onClick={() => handleItemClick(prompt)}
+                onClick={() => handleItemClick(prompt, index)}
                 className="rounded-3xl overflow-hidden aspect-[3/4] transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 <img
@@ -126,25 +164,38 @@ const Library = () => {
 
       {/* Full Screen Detail View */}
       {selectedPrompt && (
-        <div className="fixed inset-0 bg-black z-50 flex flex-col">
+        <div 
+          ref={detailContainerRef}
+          className="fixed inset-0 bg-black z-50 overflow-y-auto overflow-x-hidden"
+          style={{
+            scrollSnapType: 'y mandatory',
+            scrollBehavior: 'smooth'
+          }}
+        >
           {/* Back Button */}
           <button
             onClick={() => setSelectedPrompt(null)}
-            className="absolute top-4 left-4 z-50 w-10 h-10 bg-black/60 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white"
+            className="fixed top-4 left-4 z-50 w-10 h-10 bg-black/60 backdrop-blur-md rounded-full border border-white/20 flex items-center justify-center text-white"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
           </button>
           
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto pb-32">
-            <img
-              src={selectedPrompt.image_url}
-              alt={selectedPrompt.title || 'Prompt image'}
-              className="w-full h-auto object-contain"
-            />
-          </div>
+          {/* Scrollable Content with Snap Points */}
+          {savedPrompts.map((prompt, index) => (
+            <div 
+              key={`${prompt.id}-${index}`}
+              className="h-screen w-full relative"
+              style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
+            >
+              <img
+                src={prompt.image_url}
+                alt={prompt.title || "Saved prompt"}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          ))}
 
           {/* Fixed Bottom Buttons Container */}
           <div 
