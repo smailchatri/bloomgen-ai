@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { BottomNav } from "@/components/BottomNav";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { useSyncGoogleSheets } from "@/hooks/usePrompts";
 import personalBg from "@/assets/personal_bg.png";
 import userProfile from "@/assets/user_profile.png";
 import helpIcon from "@/assets/help_icon.png";
@@ -14,13 +12,10 @@ import deleteAccountIcon from "@/assets/delete_account_icon.png";
 import privacyIcon from "@/assets/privacy_icon.png";
 import termsIcon from "@/assets/terms_icon.png";
 import logoutIcon from "@/assets/logout_icon.png";
-import sparkleIcon from "@/assets/sparkle_icon.png";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [sheetUrl, setSheetUrl] = useState("");
-  const syncMutation = useSyncGoogleSheets();
 
   const getUserName = () => {
     return user?.email?.split('@')[0] || "User";
@@ -32,16 +27,6 @@ const Profile = () => {
     const month = date.toLocaleString('en-US', { month: 'long' });
     const year = date.getFullYear();
     return `${month} ${year}`;
-  };
-
-  const handleSync = async () => {
-    if (!sheetUrl.trim()) {
-      toast.error("Please enter a Google Sheets URL");
-      return;
-    }
-    
-    await syncMutation.mutateAsync(sheetUrl);
-    setSheetUrl("");
   };
 
   const handleLogout = async () => {
@@ -89,46 +74,7 @@ const Profile = () => {
             <div>
               <div className="text-white text-lg" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700 }}>
                 {getUserName()}
-          </div>
-
-          {/* Google Sheets Sync Section */}
-          <div 
-            className="bg-black/60 backdrop-blur-md rounded-[32px] border border-white/20 p-6"
-            style={{ fontFamily: 'Inter, sans-serif' }}
-          >
-            <div className="flex items-center gap-2 mb-4">
-              <img src={sparkleIcon} alt="" className="w-5 h-5" />
-              <h2 className="text-white text-lg" style={{ fontWeight: 700 }}>
-                Sync Prompts
-              </h2>
-            </div>
-            
-            <p className="text-white/70 text-sm mb-4" style={{ fontWeight: 300 }}>
-              Paste your Google Sheets CSV URL to sync prompts
-            </p>
-            
-            <input
-              type="text"
-              value={sheetUrl}
-              onChange={(e) => setSheetUrl(e.target.value)}
-              placeholder="https://docs.google.com/spreadsheets/..."
-              className="w-full bg-white/10 border border-white/20 rounded-2xl px-4 py-3 text-white placeholder:text-white/40 mb-3 focus:outline-none focus:border-white/40"
-              style={{ fontFamily: 'Inter, sans-serif' }}
-            />
-            
-            <button
-              onClick={handleSync}
-              disabled={syncMutation.isPending || !sheetUrl.trim()}
-              className="w-full bg-white text-black rounded-2xl px-6 py-3 font-bold transition-all hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ fontFamily: 'Inter, sans-serif' }}
-            >
-              {syncMutation.isPending ? "Syncing..." : "Sync Prompts"}
-            </button>
-            
-            <p className="text-white/50 text-xs mt-3" style={{ fontWeight: 300, fontStyle: 'italic' }}>
-              Make sure your sheet is published to web as CSV
-            </p>
-          </div>
+              </div>
               <div className="text-white/70 text-sm" style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontStyle: 'italic' }}>
                 Joined in {getJoinDate()}
               </div>
