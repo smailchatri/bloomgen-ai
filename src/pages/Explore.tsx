@@ -16,6 +16,7 @@ const Explore = () => {
   const [seenPrompts, setSeenPrompts] = useState<Set<string>>(new Set());
   const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
   const [loadedImages, setLoadedImages] = useState<Set<string>>(new Set());
+  const [genderFilter, setGenderFilter] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   
@@ -31,7 +32,8 @@ const Explore = () => {
   // Create smart prompt list: always exclude saved prompts and broken images
   const savedPromptIds = new Set(savedPromptsList.map(p => p.id));
   const availablePrompts = allPrompts
-    .filter(p => !savedPromptIds.has(p.id) && !brokenImages.has(p.id));
+    .filter(p => !savedPromptIds.has(p.id) && !brokenImages.has(p.id))
+    .filter(p => !genderFilter || p.gender === genderFilter);
 
   const currentPrompt = availablePrompts[currentIndex];
 
@@ -126,6 +128,37 @@ const Explore = () => {
         scrollBehavior: 'smooth'
       }}
     >
+      {/* Gender Filter - Fixed at top */}
+      <div 
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-3 px-6"
+        style={{ 
+          paddingTop: 'max(env(safe-area-inset-top, 0px) + 16px, 60px)'
+        }}
+      >
+        <button
+          onClick={() => setGenderFilter(genderFilter === 'male' ? null : 'male')}
+          className={`h-[44px] px-6 backdrop-blur-md rounded-[22px] border flex items-center justify-center transition-all ${
+            genderFilter === 'male' 
+              ? 'bg-[#10B981]/80 border-[#10B981] text-white font-bold' 
+              : 'bg-black/60 border-white/20 text-white hover:bg-black/70'
+          }`}
+          style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px' }}
+        >
+          Male
+        </button>
+        
+        <button
+          onClick={() => setGenderFilter(genderFilter === 'female' ? null : 'female')}
+          className={`h-[44px] px-6 backdrop-blur-md rounded-[22px] border flex items-center justify-center transition-all ${
+            genderFilter === 'female' 
+              ? 'bg-[#10B981]/80 border-[#10B981] text-white font-bold' 
+              : 'bg-black/60 border-white/20 text-white hover:bg-black/70'
+          }`}
+          style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px' }}
+        >
+          Female
+        </button>
+      </div>
       {/* Scrollable Content with Snap Points - Render prompts 3 times for seamless infinite scroll */}
       {[...availablePrompts, ...availablePrompts, ...availablePrompts].map((prompt, index) => {
         const isLoaded = loadedImages.has(prompt.id);
