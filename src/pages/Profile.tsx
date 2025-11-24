@@ -120,9 +120,9 @@ const Profile = () => {
             </a>
 
             <button
-              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 opacity-50 cursor-default"
+              onClick={() => window.open("https://apps.apple.com/account/subscriptions", "_blank", "noopener,noreferrer")}
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
-              disabled
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Manage Subscription</span>

@@ -21,8 +21,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
   const [selectedPlan, setSelectedPlan] = useState<PricingPlan>("monthly");
 
   const handleRestore = () => {
-    // Placeholder for restore purchases logic
-    console.log("Restore purchases");
+    window.open("https://support.apple.com/en-us/HT204530", "_blank", "noopener,noreferrer");
   };
 
   const handleSubscribe = () => {
@@ -403,10 +402,8 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
 
           {/* Footer Links */}
           <div className="flex items-center justify-center gap-2 flex-wrap flex-shrink-0">
-            <a 
-              href="https://bloomgen.app/policies" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <button 
+              onClick={() => window.open("https://bloomgen.app/terms", "_blank", "noopener,noreferrer")}
               className="text-white"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
@@ -415,12 +412,10 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               }}
             >
               Terms of Service
-            </a>
+            </button>
             <span className="text-white/40" style={{ fontSize: '11px' }}>•</span>
-            <a 
-              href="https://bloomgen.app/policies" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <button 
+              onClick={() => window.open("https://bloomgen.app/privacy", "_blank", "noopener,noreferrer")}
               className="text-white"
               style={{ 
                 fontFamily: 'Inter, sans-serif',
@@ -429,7 +424,7 @@ export const PaywallModal = ({ open, onOpenChange }: PaywallModalProps) => {
               }}
             >
               Privacy Policy
-            </a>
+            </button>
             <span className="text-white/40" style={{ fontSize: '11px' }}>•</span>
             <button 
               onClick={handleRestore}
