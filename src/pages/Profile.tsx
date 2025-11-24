@@ -1,5 +1,5 @@
 import { BottomNav } from "@/components/BottomNav";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -83,35 +83,35 @@ const Profile = () => {
 
           {/* Settings Rows */}
           <div className="space-y-3">
-            <Link
-              to="/support"
+            <button
+              onClick={() => window.open("https://bloomgen.app/support", "_blank")}
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={helpIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Get Help</span>
-            </Link>
+            </button>
 
-            <Link
-              to="/support"
+            <button
+              onClick={() => window.open("https://bloomgen.app/guidelines", "_blank")}
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={guidelinesIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Community Guidelines</span>
-            </Link>
+            </button>
 
-            <Link
-              to="/support"
+            <button
+              onClick={() => window.open("https://bloomgen.app/faq", "_blank")}
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={faqIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>FAQ</span>
-            </Link>
+            </button>
 
             <a
-              href="mailto:support@bloomgen.app?subject=Delete Account Request&body=I want to delete my account."
+              href="mailto:support@bloomgen.app?subject=Delete%20My%20Account&body=Hello%20BLOOMGEN%20team,%0D%0A%0D%0APlease%20delete%20my%20account.%20My%20email%20is:%20"
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
@@ -119,34 +119,34 @@ const Profile = () => {
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Delete Account</span>
             </a>
 
-            <Link
-              to="/policies"
-              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
+            <button
+              className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 opacity-50 cursor-default"
               style={{ fontFamily: 'Inter, sans-serif' }}
+              disabled
             >
               <img src={deleteAccountIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Manage Subscription</span>
-            </Link>
+            </button>
 
-            <Link
-              to="/policies"
+            <button
+              onClick={() => window.open("https://bloomgen.app/privacy", "_blank")}
               className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70"
               style={{ fontFamily: 'Inter, sans-serif' }}
             >
               <img src={privacyIcon} alt="" className="w-6 h-6" />
               <span className="text-white text-base" style={{ fontWeight: 600 }}>Privacy Policy</span>
-            </Link>
+            </button>
           </div>
 
           {/* Terms of Service */}
-          <Link
-            to="/policies"
+          <button
+            onClick={() => window.open("https://bloomgen.app/terms", "_blank")}
             className="w-full bg-black/60 backdrop-blur-md rounded-[28px] border border-white/20 p-5 flex items-center gap-4 transition-all hover:bg-black/70 mt-6"
             style={{ fontFamily: 'Inter, sans-serif' }}
           >
             <img src={termsIcon} alt="" className="w-6 h-6" />
             <span className="text-white text-base" style={{ fontWeight: 600 }}>Terms of Service</span>
-          </Link>
+          </button>
 
           {/* Logout */}
           <button
