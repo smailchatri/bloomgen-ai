@@ -4,6 +4,7 @@ export interface Prompt {
   category: string;
   image_url: string;
   prompt_text: string;
+  gender?: string;
 }
 
 export interface User {
