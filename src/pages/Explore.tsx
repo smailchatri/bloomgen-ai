@@ -36,10 +36,10 @@ const Explore = () => {
 
   const isPremium = premiumStatus?.isPremium || false;
 
-  // Create smart prompt list: always exclude saved prompts and broken images
+  // Create smart prompt list: always exclude saved prompts (but show even if images fail)
   const savedPromptIds = new Set(savedPromptsList.map(p => p.id));
   const availablePrompts = allPrompts
-    .filter(p => !savedPromptIds.has(p.id) && !brokenImages.has(p.id))
+    .filter(p => !savedPromptIds.has(p.id))
     .filter(p => !genderFilter || p.gender === genderFilter);
 
   console.log('Debug Explore:', {
