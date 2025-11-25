@@ -137,8 +137,17 @@ const Explore = () => {
 
   if (!availablePrompts.length) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-black">
-        <p className="text-white">No prompts available. Add some via Google Sheets sync!</p>
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-black gap-4 p-6">
+        <p className="text-white text-xl">No prompts available</p>
+        <div className="text-white text-sm opacity-70 text-left max-w-md">
+          <p>Debug Info:</p>
+          <p>- Total prompts: {allPrompts.length}</p>
+          <p>- Saved prompts: {savedPromptsList.length}</p>
+          <p>- Broken images: {brokenImages.size}</p>
+          <p>- Gender filter: {genderFilter || 'none'}</p>
+          <p>- Available after filters: {availablePrompts.length}</p>
+          <p>- Prompts loading: {String(promptsLoading)}</p>
+        </div>
       </div>
     );
   }
