@@ -21,46 +21,67 @@ Deno.serve(async (req) => {
     const csvText = await response.text();
     
     console.log('Fetched CSV data');
+    console.log('First 500 chars of CSV:', csvText.substring(0, 500));
+    console.log('CSV line count:', csvText.split('\n').length);
     
-    // Parse CSV - properly handle quoted fields
+    // Parse CSV - properly handle quoted fields with newlines
     const lines = csvText.trim().split('\n');
     const prompts: PromptRow[] = [];
     
-    // Function to parse CSV line with proper quote handling
-    function parseCSVLine(line: string): string[] {
-      const result: string[] = [];
-      let current = '';
+    // Function to parse CSV with proper quote and newline handling
+    function parseCSV(csv: string): string[][] {
+      const rows: string[][] = [];
+      let currentRow: string[] = [];
+      let currentField = '';
       let inQuotes = false;
       
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
+      for (let i = 0; i < csv.length; i++) {
+        const char = csv[i];
+        const nextChar = csv[i + 1];
         
-        if (char === '"') {
+        if (char === '"' && nextChar === '"' && inQuotes) {
+          // Escaped quote
+          currentField += '"';
+          i++; // Skip next quote
+        } else if (char === '"') {
           inQuotes = !inQuotes;
         } else if (char === ',' && !inQuotes) {
-          result.push(current.trim());
-          current = '';
+          currentRow.push(currentField.trim());
+          currentField = '';
+        } else if (char === '\n' && !inQuotes) {
+          currentRow.push(currentField.trim());
+          if (currentRow.length > 0) rows.push(currentRow);
+          currentRow = [];
+          currentField = '';
         } else {
-          current += char;
+          currentField += char;
         }
       }
-      result.push(current.trim());
-      return result;
+      
+      // Push last field and row
+      if (currentField || currentRow.length > 0) {
+        currentRow.push(currentField.trim());
+        rows.push(currentRow);
+      }
+      
+      return rows;
     }
     
-    // Skip header row, start from index 1
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
+    const rows = parseCSV(csvText);
+    console.log(`Total rows parsed: ${rows.length}`);
+    
+    // Skip header row (index 0), process data rows
+    for (let i = 1; i < rows.length; i++) {
+      const row = rows[i];
+      if (row.length < 2) continue; // Need at least image_url and prompt_text
       
-      // Parse CSV: Links, Prompts, Gender
-      const [image_url, prompt_text, gender] = parseCSVLine(line);
+      const [image_url, prompt_text, gender] = row;
       
       if (prompt_text && image_url) {
         prompts.push({ 
           prompt_text, 
           image_url,
-          gender: gender?.toLowerCase() // Normalize to lowercase
+          gender: gender?.toLowerCase() // Normalize to lowercase (handles "Gander" typo)
         });
       }
     }
