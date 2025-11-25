@@ -22,9 +22,31 @@ Deno.serve(async (req) => {
     
     console.log('Fetched CSV data');
     
-    // Parse CSV
+    // Parse CSV - properly handle quoted fields
     const lines = csvText.trim().split('\n');
     const prompts: PromptRow[] = [];
+    
+    // Function to parse CSV line with proper quote handling
+    function parseCSVLine(line: string): string[] {
+      const result: string[] = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        
+        if (char === '"') {
+          inQuotes = !inQuotes;
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
     
     // Skip header row, start from index 1
     for (let i = 1; i < lines.length; i++) {
@@ -32,7 +54,7 @@ Deno.serve(async (req) => {
       if (!line) continue;
       
       // Parse CSV: Links, Prompts, Gender
-      const [image_url, prompt_text, gender] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      const [image_url, prompt_text, gender] = parseCSVLine(line);
       
       if (prompt_text && image_url) {
         prompts.push({ 

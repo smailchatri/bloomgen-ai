@@ -45,6 +45,7 @@ export type Database = {
         Row: {
           category: string | null
           created_at: string
+          gender: string | null
           id: string
           image_url: string
           prompt_text: string
@@ -53,6 +54,7 @@ export type Database = {
         Insert: {
           category?: string | null
           created_at?: string
+          gender?: string | null
           id?: string
           image_url: string
           prompt_text: string
@@ -61,6 +63,7 @@ export type Database = {
         Update: {
           category?: string | null
           created_at?: string
+          gender?: string | null
           id?: string
           image_url?: string
           prompt_text?: string
