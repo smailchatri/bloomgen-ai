@@ -35,6 +35,15 @@ const Explore = () => {
     .filter(p => !savedPromptIds.has(p.id) && !brokenImages.has(p.id))
     .filter(p => !genderFilter || p.gender === genderFilter);
 
+  console.log('Debug Explore:', {
+    allPromptsCount: allPrompts.length,
+    savedPromptsCount: savedPromptsList.length,
+    brokenImagesCount: brokenImages.size,
+    genderFilter,
+    availablePromptsCount: availablePrompts.length,
+    firstPrompt: availablePrompts[0]
+  });
+
   const currentPrompt = availablePrompts[currentIndex];
 
   // Track seen prompts on scroll
