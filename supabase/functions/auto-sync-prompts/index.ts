@@ -3,6 +3,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.84.0';
 interface PromptRow {
   prompt_text: string;
   image_url: string;
+  gender?: string;
 }
 
 Deno.serve(async (req) => {
@@ -30,17 +31,15 @@ Deno.serve(async (req) => {
       const line = lines[i].trim();
       if (!line) continue;
       
-      // Simple CSV parsing - image_url first, then prompt_text
-      const [image_url, prompt_text] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      // Parse CSV: Links, Prompts, Gender
+      const [image_url, prompt_text, gender] = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
       
       if (prompt_text && image_url) {
-        // Fix imgur URLs - convert https://imgur.com/ID to https://i.imgur.com/ID.jpg
-        let fixedImageUrl = image_url;
-        if (image_url.includes('imgur.com/') && !image_url.includes('i.imgur.com')) {
-          const imgurId = image_url.split('imgur.com/')[1].split('.')[0];
-          fixedImageUrl = `https://i.imgur.com/${imgurId}.jpg`;
-        }
-        prompts.push({ prompt_text, image_url: fixedImageUrl });
+        prompts.push({ 
+          prompt_text, 
+          image_url,
+          gender: gender?.toLowerCase() // Normalize to lowercase
+        });
       }
     }
 
@@ -72,7 +71,8 @@ Deno.serve(async (req) => {
           prompt_text: p.prompt_text,
           image_url: p.image_url,
           title: p.prompt_text.substring(0, 50),
-          category: 'General'
+          category: 'General',
+          gender: p.gender
         }))
       );
 
