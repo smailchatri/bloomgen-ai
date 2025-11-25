@@ -21,11 +21,18 @@ const Explore = () => {
   const { toast } = useToast();
   
   // Fetch data
-  const { data: allPrompts = [], isLoading: promptsLoading } = usePrompts();
+  const { data: allPrompts = [], isLoading: promptsLoading, error: promptsError } = usePrompts();
   const { data: savedPromptsList = [] } = useSavedPrompts();
   const { data: premiumStatus } = usePremium();
   const savePromptMutation = useSavePrompt();
   const unsavePromptMutation = useUnsavePrompt();
+
+  console.log('Explore Page - Fetch Status:', { 
+    promptsLoading, 
+    promptsError,
+    allPromptsLength: allPrompts?.length,
+    allPrompts: allPrompts?.slice(0, 2)
+  });
 
   const isPremium = premiumStatus?.isPremium || false;
 
@@ -109,6 +116,16 @@ const Explore = () => {
       duration: 2000,
     });
   };
+
+  if (promptsError) {
+    console.error('Prompts Error:', promptsError);
+    return (
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-black gap-4">
+        <p className="text-white">Error loading prompts</p>
+        <p className="text-white text-sm opacity-70">{String(promptsError)}</p>
+      </div>
+    );
+  }
 
   if (promptsLoading) {
     return (
