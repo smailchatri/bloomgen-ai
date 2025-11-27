@@ -61,9 +61,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }, 0);
         }
         
-        // Clear premium status on logout
+        // Clear premium status and onboarding flag on logout
         if (event === 'SIGNED_OUT') {
           setIsPremium(false);
+          localStorage.removeItem(ONBOARDING_KEY);
+          setHasSeenOnboarding(false);
         }
       }
     );
