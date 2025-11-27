@@ -31,10 +31,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     try {
-      // Clear onboarding flag to show onboarding screens again
-      localStorage.removeItem('hasSeenOnboarding');
-      
-      // Sign out from Supabase
+      // Sign out from Supabase (onboarding flag cleared in useAuth)
       await supabase.auth.signOut();
       
       toast.success("Logged out successfully");

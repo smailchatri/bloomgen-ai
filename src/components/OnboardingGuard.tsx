@@ -16,15 +16,11 @@ export function OnboardingGuard({ children }: OnboardingGuardProps) {
     );
   }
 
-  // If user is authenticated and has seen onboarding, redirect to main app
-  if (user && hasSeenOnboarding) {
+  // If user is authenticated, redirect to main app
+  if (user) {
     return <Navigate to="/explore" replace />;
   }
 
-  // If user has seen onboarding but not authenticated, go to login
-  if (hasSeenOnboarding && !user) {
-    return <Navigate to="/auth/login" replace />;
-  }
-
+  // If user is not authenticated, always show onboarding screens
   return <>{children}</>;
 }
